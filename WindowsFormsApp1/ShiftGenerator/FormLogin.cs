@@ -13,7 +13,7 @@ namespace ShiftGenerator
     public partial class FormLogin : Form
     {
         DataClasses1DataContext data;
-        private FormMain formLog;
+        private FormMenu formLog;
 
         public FormLogin()
         {
@@ -49,7 +49,7 @@ namespace ShiftGenerator
 
                         labelMsg.Text = "Zalogowano !!!";
                         labelMsg.Visible = true;
-                        FormMain formMain = new FormMain();
+                        FormMenu formMain = new FormMenu(this);
                         formMain.Show();
                         if (result.user.permission.Equals("admin"))
                         {
@@ -57,7 +57,7 @@ namespace ShiftGenerator
                         }
                         //formMain.Loggedin = true;
                         //formMain.loadBox();
-                        this.Close();
+                        this.Hide();
                     }
                     else
                     {
@@ -77,6 +77,11 @@ namespace ShiftGenerator
                 }
             }
             else { MessageBox.Show("Enter login and password"); }
+        }
+
+        private void FormLogin_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }
