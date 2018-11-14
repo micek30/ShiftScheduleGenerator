@@ -13,7 +13,7 @@ namespace ShiftGenerator
     public partial class FormLogin : Form
     {
         DataClasses1DataContext data;
-        private FormMenu formLog;
+        //private FormMenu formLog;
 
         public FormLogin()
         {
@@ -68,11 +68,13 @@ namespace ShiftGenerator
                 catch (System.Data.SqlClient.SqlException ex)
                 {
                     MessageBox.Show("Connection lost");
+                    Console.WriteLine(ex);
                     this.Close();
                 }
                 catch (Exception ex)
                 {
                     labelMsg.Text = "Zly login lub haslo !!!";
+                    Console.WriteLine(ex);
                     labelMsg.Visible = true;
                 }
             }
