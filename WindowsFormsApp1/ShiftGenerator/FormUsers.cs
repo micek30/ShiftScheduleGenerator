@@ -14,6 +14,8 @@ namespace ShiftGenerator
     {
         DataClasses1DataContext data;
         FormMenu formHandler;
+        public Employee toUpdateEmployee;
+        public User toUpdateUser;
         public FormUsers(FormMenu form)
         {
 
@@ -22,6 +24,12 @@ namespace ShiftGenerator
                 this.formHandler = form;
                 data = new DataClasses1DataContext();
                 loadEmployees();
+
+     //       this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
+            this.textBoxName.Enter += new System.EventHandler(this.textBoxName_Enter);
+            this.textBoxSurname.Enter += new System.EventHandler(this.textBoxSurname_Enter);
+            this.textBoxLogin.Enter += new System.EventHandler(this.textBoxLogin_Enter);
+            this.textBoxPassword.Enter += new System.EventHandler(this.textBoxPassword_Enter);
 
             //ADDING VALUES TO COMBOBOXES
             //JOB CONTRACTS
@@ -86,23 +94,20 @@ namespace ShiftGenerator
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            //ComboBoxJobContract
-            string comboContractVal = ((KeyValuePair<string, string>)comboBoxContract.SelectedItem).Value;
-            //ComboBoxFrenchLevel
-            string comboFrenchVal = ((KeyValuePair<string, string>)comboBoxFrenchLvl.SelectedItem).Value;
-            //ComboBoxPermission
-            string comboPermVal = ((KeyValuePair<string, string>)comboBoxPermission.SelectedItem).Value;
-            //ComboBoxPermission
-            string comboTeamVal = ((KeyValuePair<string, string>)comboBoxTeam.SelectedItem).Value;
-
-            if (!textBoxName.Equals("") && !textBoxSurname.Equals("") && !textBoxLogin.Equals("") && !textBoxPassword.Equals(""))
-            {
-
+            if(textBoxName.Text != "Name"&& textBoxSurname.Text != "Surname"&&textBoxLogin.Text != "Login"&& textBoxPassword.Text != "Password") {
+                //ComboBoxJobContract
+                string comboContractVal = ((KeyValuePair<string, string>)comboBoxContract.SelectedItem).Value;
+                //ComboBoxFrenchLevel
+                string comboFrenchVal = ((KeyValuePair<string, string>)comboBoxFrenchLvl.SelectedItem).Value;
+                //ComboBoxPermission
+                string comboPermVal = ((KeyValuePair<string, string>)comboBoxPermission.SelectedItem).Value;
+                //ComboBoxPermission
+                string comboTeamVal = ((KeyValuePair<string, string>)comboBoxTeam.SelectedItem).Value;
 
                 ////////////////////////////////////////// USER
                 User user = new User();
                 user.login = textBoxLogin.Text;
-                user.password = textBoxPassword.Text;
+                user.password = textBoxSurname.Text;
                 user.permission = comboPermVal;
 
                 data.Users.InsertOnSubmit(user);
@@ -111,7 +116,7 @@ namespace ShiftGenerator
                 ///////////////////////////////////////// EMPLOYEE
                 Employee employee = new Employee();
                 employee.name = textBoxName.Text;
-                employee.surname = textBoxSurname.Text;
+                employee.surname = textBoxPassword.Text;
                 employee.jobContract = comboContractVal;
                 employee.frenchlvl = comboFrenchVal;
                 //idTeam
@@ -129,24 +134,190 @@ namespace ShiftGenerator
                 if (checkBoxIndependent.Checked)
                 {
                     employee.independent = true;
-                }
-                else { employee.independent = false; }
+                } else { employee.independent = false; }
 
                 data.Employees.InsertOnSubmit(employee);
                 try { data.SubmitChanges(); } catch (System.Data.SqlClient.SqlException ex) { Console.WriteLine(ex); }
+
+                loadEmployees();
             }
-            loadEmployees();
         }
 
+
+
+        private int getSelectedIdx(DataGridView dataGridView, String columnName)
+        {
+            int idx = dataGridView.SelectedCells[0].RowIndex;
+
+            DataGridViewRow selectedRow = dataGridView.Rows[idx];
+
+            int selected = Convert.ToInt32(selectedRow.Cells[columnName].Value);
+
+            return selected;
+        }
+
+        private void buttonDelete_Click(object sender, EventArgs e)
+            {
+                try
+                {
+                    //DELETING USER
+                    int selected = getSelectedIdx(dataGridViewEmp, "idEmployee");
+
+                    var result = (from users in data.Users
+                                  join employee in data.Employees
+                                  on users.idUser equals employee.idUser
+                                  where employee.idEmployee == selected
+                                  select users).First();
+
+                    //int tempUserId = result.idUser;
+                    data.Users.DeleteOnSubmit(result);
+
+                    //DELETING EMPLOYEE
+                    var result2 = (from employee in data.Employees
+                                   where employee.idEmployee == selected
+                                   select employee).First();
+
+                    //int tempUserId = result.idUser;
+                    data.Employees.DeleteOnSubmit(result2);
+
+                    try { data.SubmitChanges(); } catch (System.Data.SqlClient.SqlException ex) { Console.WriteLine(ex); }
+
+
+                }
+                catch (Exception ex)
+                {
+                    Console.Write(ex);
+                    //formHandler.lostConnection();
+                }
+
+                loadEmployees();
+            
+        }
+
+        private void buttonEdit_Click(object sender, EventArgs e)
+        {
+            int selected = getSelectedIdx(dataGridViewEmp, "idEmployee");
+            toUpdateEmployee = data.Employees.SingleOrDefault(x => x.idEmployee == selected);
+            toUpdateUser = data.Users.SingleOrDefault(x => x.idUser == toUpdateEmployee.idUser);
+
+            textBoxName.Text = toUpdateEmployee.name;
+            textBoxSurname.Text = toUpdateEmployee.surname;
+            textBoxLogin.Text = toUpdateUser.login;
+            textBoxPassword.Text = toUpdateUser.password;
+
+            buttonAdd.Enabled = false;
+            buttonEdit.Enabled = false;
+            buttonDelete.Enabled = false;
+            buttonSave.Visible = true;
+            buttonSave.Enabled = true;
+            buttonCancel.Visible = true;
+            buttonCancel.Enabled = true;
+
+        }
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            var result = (from users in data.Users
-                         orderby users.idUser descending
-                         select users.idUser).First();
-            int ajdi = result;
+            //ComboBoxJobContract
+            string comboContractVal = ((KeyValuePair<string, string>)comboBoxContract.SelectedItem).Value;
+            //ComboBoxFrenchLevel
+            string comboFrenchVal = ((KeyValuePair<string, string>)comboBoxFrenchLvl.SelectedItem).Value;
+            //ComboBoxPermission
+            string comboPermVal = ((KeyValuePair<string, string>)comboBoxPermission.SelectedItem).Value;
+            //ComboBoxPermission
+            string comboTeamVal = ((KeyValuePair<string, string>)comboBoxTeam.SelectedItem).Value;
 
-            textBoxSurname.Text = ajdi.ToString();
+            //textBoxName.Text = toUpdateEmployee.name;
+            //textBoxSurname.Text = toUpdateEmployee.surname;
+            //textBoxLogin.Text = toUpdateUser.login;
+            //textBoxPassword.Text = toUpdateUser.password;
 
+            toUpdateEmployee.name = textBoxName.Text;
+            toUpdateEmployee.surname = textBoxSurname.Text;
+            toUpdateUser.login = textBoxLogin.Text;
+            toUpdateUser.password = textBoxPassword.Text;
+            
+
+
+            //idTeam
+            if (comboTeamVal == "Channels")
+            {
+                toUpdateEmployee.idTeam = 1;
+            }
+            else { toUpdateEmployee.idTeam = 2; }
+
+            //independent
+            if (checkBoxIndependent.Checked)
+            {
+                toUpdateEmployee.independent = true;
+            }
+            else { toUpdateEmployee.independent = false; }
+
+            try { data.SubmitChanges(); } catch (Exception ex) { Console.WriteLine(ex); }
+
+            buttonAdd.Enabled = true;
+            buttonEdit.Enabled = true;
+            buttonDelete.Enabled = true;
+            buttonSave.Enabled = false;
+            buttonSave.Visible = false;
+
+            loadEmployees();
+
+        }
+
+        //private void textBoxName_Leave(object sender, EventArgs e)
+        //{
+        //    if (textBoxName.Text.Length == 0)
+        //    {
+        //        textBoxName.Text = "Name";
+        //        textBoxName.ForeColor = SystemColors.GrayText;
+        //    }
+        //}
+        private void textBoxName_Enter(object sender, EventArgs e)
+        {
+            if (textBoxName.Text == "Name")
+            {
+                textBoxName.Clear();
+                textBoxName.ForeColor = SystemColors.WindowText;
+            }
+        }
+        private void textBoxSurname_Enter(object sender, EventArgs e)
+        {
+            if (textBoxSurname.Text == "Surname")
+            {
+                textBoxSurname.Clear();
+                textBoxSurname.ForeColor = SystemColors.WindowText;
+            }
+        }
+        private void textBoxLogin_Enter(object sender, EventArgs e)
+        {
+            if (textBoxLogin.Text == "Login")
+            {
+                textBoxLogin.Clear();
+                textBoxLogin.ForeColor = SystemColors.WindowText;
+            }
+        }
+        private void textBoxPassword_Enter(object sender, EventArgs e)
+        {
+            if (textBoxPassword.Text == "Password")
+            {
+                textBoxPassword.Clear();
+                textBoxPassword.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void buttonCancel_Click(object sender, EventArgs e)
+        {
+            textBoxName.Text = "Name";
+            textBoxSurname.Text = "Surname";
+            textBoxLogin.Text = "Login";
+            textBoxPassword.Text = "Password";
+
+            buttonAdd.Enabled = true;
+            buttonEdit.Enabled = true;
+            buttonDelete.Enabled = true;
+            buttonSave.Enabled = false;
+            buttonSave.Visible = false;
+            buttonCancel.Enabled = false;
+            buttonCancel.Visible = false;
         }
     }
 }

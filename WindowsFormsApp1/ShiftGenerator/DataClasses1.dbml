@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ShiftScheduleDB" Class="DataClasses1DataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=DESKTOP-180GKUF\SQLEXPRESS;Initial Catalog=ShiftScheduleDB;Integrated Security=True" SettingsObjectName="ShiftGenerator.Properties.Settings" SettingsPropertyName="ShiftScheduleDBConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=CPX-FKFC51GP1UV\SQLEXPRESS;Initial Catalog=ShiftScheduleDB;Integrated Security=True" SettingsObjectName="ShiftGenerator.Properties.Settings" SettingsPropertyName="ShiftScheduleDBConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Employees" Member="Employees">
     <Type Name="Employee">
       <Column Name="idEmployee" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -40,6 +40,16 @@
       <Association Name="Employee_EmpRequirement" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
+  <Table Name="dbo.FTE" Member="FTEs">
+    <Type Name="FTE">
+      <Column Name="idFTE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="workingHours" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="workingHoursLast" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SPM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Employee_FTE" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
   <Table Name="dbo.LanguageSupport" Member="LanguageSupports">
     <Type Name="LanguageSupport">
       <Column Name="idLanguage" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -60,17 +70,6 @@
       <Column Name="permission" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
       <Column Name="login" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Association Name="User_Employee" Member="Employees" ThisKey="idUser" OtherKey="idUser" Type="Employee" />
-    </Type>
-  </Table>
-  <Table Name="dbo.FTE" Member="FTEs">
-    <Type Name="FTE">
-      <Column Name="idFTE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="workingHours" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="workingHoursLast" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SPM" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="partTime" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Association Name="Employee_FTE" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Teams" Member="Teams">
