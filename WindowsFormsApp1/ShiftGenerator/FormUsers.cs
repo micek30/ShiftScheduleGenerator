@@ -258,7 +258,8 @@ namespace ShiftGenerator
             buttonDelete.Enabled = true;
             buttonSave.Enabled = false;
             buttonSave.Visible = false;
-
+            buttonCancel.Enabled = false;
+            buttonCancel.Visible = false;
             loadEmployees();
 
         }
