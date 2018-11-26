@@ -50,9 +50,15 @@ namespace ShiftGenerator
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnLawRequirements_Click(object sender, EventArgs e)
         {
+            FormLawReq formLawReq = new FormLawReq(this);
+            formLawReq.Show();
+        }
 
+        private void FormMenu_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Application.Exit();
         }
 
         private void btnSchedules_Click(object sender, EventArgs e)
@@ -80,16 +86,16 @@ namespace ShiftGenerator
             }
         }
 
-        protected override void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
+        //protected override void OnFormClosing(FormClosingEventArgs e)
+        //{
+        //    base.OnFormClosing(e);
 
-            if (e.CloseReason == CloseReason.WindowsShutDown) return;
+        //    if (e.CloseReason == CloseReason.WindowsShutDown) return;
 
-            e.Cancel = true;
-            formLogin.Show();
-            this.Hide();
-        }
+        //    e.Cancel = true;
+        //    formLogin.Show();
+        //    this.Hide();
+        //}
     }
 }
  

@@ -42,18 +42,15 @@ namespace ShiftGenerator
     partial void InsertFTE(FTE instance);
     partial void UpdateFTE(FTE instance);
     partial void DeleteFTE(FTE instance);
-    partial void InsertLanguageSupport(LanguageSupport instance);
-    partial void UpdateLanguageSupport(LanguageSupport instance);
-    partial void DeleteLanguageSupport(LanguageSupport instance);
-    partial void InsertLawRequirement(LawRequirement instance);
-    partial void UpdateLawRequirement(LawRequirement instance);
-    partial void DeleteLawRequirement(LawRequirement instance);
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
     partial void InsertTeam(Team instance);
     partial void UpdateTeam(Team instance);
     partial void DeleteTeam(Team instance);
+    partial void InsertLawRequirement(LawRequirement instance);
+    partial void UpdateLawRequirement(LawRequirement instance);
+    partial void DeleteLawRequirement(LawRequirement instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -118,22 +115,6 @@ namespace ShiftGenerator
 			}
 		}
 		
-		public System.Data.Linq.Table<LanguageSupport> LanguageSupports
-		{
-			get
-			{
-				return this.GetTable<LanguageSupport>();
-			}
-		}
-		
-		public System.Data.Linq.Table<LawRequirement> LawRequirements
-		{
-			get
-			{
-				return this.GetTable<LawRequirement>();
-			}
-		}
-		
 		public System.Data.Linq.Table<User> Users
 		{
 			get
@@ -147,6 +128,14 @@ namespace ShiftGenerator
 			get
 			{
 				return this.GetTable<Team>();
+			}
+		}
+		
+		public System.Data.Linq.Table<LawRequirement> LawRequirements
+		{
+			get
+			{
+				return this.GetTable<LawRequirement>();
 			}
 		}
 	}
@@ -1216,202 +1205,6 @@ namespace ShiftGenerator
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LanguageSupport")]
-	public partial class LanguageSupport : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _idLanguage;
-		
-		private System.Nullable<bool> _isLanguageSupport;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidLanguageChanging(int value);
-    partial void OnidLanguageChanged();
-    partial void OnisLanguageSupportChanging(System.Nullable<bool> value);
-    partial void OnisLanguageSupportChanged();
-    #endregion
-		
-		public LanguageSupport()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idLanguage", DbType="Int NOT NULL", IsPrimaryKey=true)]
-		public int idLanguage
-		{
-			get
-			{
-				return this._idLanguage;
-			}
-			set
-			{
-				if ((this._idLanguage != value))
-				{
-					this.OnidLanguageChanging(value);
-					this.SendPropertyChanging();
-					this._idLanguage = value;
-					this.SendPropertyChanged("idLanguage");
-					this.OnidLanguageChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_isLanguageSupport", DbType="Bit")]
-		public System.Nullable<bool> isLanguageSupport
-		{
-			get
-			{
-				return this._isLanguageSupport;
-			}
-			set
-			{
-				if ((this._isLanguageSupport != value))
-				{
-					this.OnisLanguageSupportChanging(value);
-					this.SendPropertyChanging();
-					this._isLanguageSupport = value;
-					this.SendPropertyChanged("isLanguageSupport");
-					this.OnisLanguageSupportChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LawRequirements")]
-	public partial class LawRequirement : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _idRequirements;
-		
-		private string _reqDesc;
-		
-		private System.Nullable<bool> _fulfilled;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidRequirementsChanging(int value);
-    partial void OnidRequirementsChanged();
-    partial void OnreqDescChanging(string value);
-    partial void OnreqDescChanged();
-    partial void OnfulfilledChanging(System.Nullable<bool> value);
-    partial void OnfulfilledChanged();
-    #endregion
-		
-		public LawRequirement()
-		{
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idRequirements", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int idRequirements
-		{
-			get
-			{
-				return this._idRequirements;
-			}
-			set
-			{
-				if ((this._idRequirements != value))
-				{
-					this.OnidRequirementsChanging(value);
-					this.SendPropertyChanging();
-					this._idRequirements = value;
-					this.SendPropertyChanged("idRequirements");
-					this.OnidRequirementsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reqDesc", DbType="VarChar(50)")]
-		public string reqDesc
-		{
-			get
-			{
-				return this._reqDesc;
-			}
-			set
-			{
-				if ((this._reqDesc != value))
-				{
-					this.OnreqDescChanging(value);
-					this.SendPropertyChanging();
-					this._reqDesc = value;
-					this.SendPropertyChanged("reqDesc");
-					this.OnreqDescChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fulfilled", DbType="Bit")]
-		public System.Nullable<bool> fulfilled
-		{
-			get
-			{
-				return this._fulfilled;
-			}
-			set
-			{
-				if ((this._fulfilled != value))
-				{
-					this.OnfulfilledChanging(value);
-					this.SendPropertyChanging();
-					this._fulfilled = value;
-					this.SendPropertyChanged("fulfilled");
-					this.OnfulfilledChanged();
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
 	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
 	{
@@ -1709,6 +1502,92 @@ namespace ShiftGenerator
 		{
 			this.SendPropertyChanging();
 			entity.Team = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.LawRequirements")]
+	public partial class LawRequirement : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _idRequirements;
+		
+		private string _reqDesc;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidRequirementsChanging(int value);
+    partial void OnidRequirementsChanged();
+    partial void OnreqDescChanging(string value);
+    partial void OnreqDescChanged();
+    #endregion
+		
+		public LawRequirement()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idRequirements", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int idRequirements
+		{
+			get
+			{
+				return this._idRequirements;
+			}
+			set
+			{
+				if ((this._idRequirements != value))
+				{
+					this.OnidRequirementsChanging(value);
+					this.SendPropertyChanging();
+					this._idRequirements = value;
+					this.SendPropertyChanged("idRequirements");
+					this.OnidRequirementsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reqDesc", DbType="VarChar(MAX)")]
+		public string reqDesc
+		{
+			get
+			{
+				return this._reqDesc;
+			}
+			set
+			{
+				if ((this._reqDesc != value))
+				{
+					this.OnreqDescChanging(value);
+					this.SendPropertyChanging();
+					this._reqDesc = value;
+					this.SendPropertyChanged("reqDesc");
+					this.OnreqDescChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }
