@@ -25,11 +25,9 @@ namespace ShiftGenerator
                 data = new DataClasses1DataContext();
                 loadEmployees();
 
-     //       this.textBoxName.Leave += new System.EventHandler(this.textBoxName_Leave);
             this.textBoxName.Enter += new System.EventHandler(this.textBoxName_Enter);
             this.textBoxSurname.Enter += new System.EventHandler(this.textBoxSurname_Enter);
             this.textBoxLogin.Enter += new System.EventHandler(this.textBoxLogin_Enter);
-            this.textBoxPassword.Enter += new System.EventHandler(this.textBoxPassword_Enter);
 
             //ADDING VALUES TO COMBOBOXES
             //JOB CONTRACTS
@@ -65,7 +63,14 @@ namespace ShiftGenerator
             comboBoxTeam.DataSource = new BindingSource(team, null);
             comboBoxTeam.DisplayMember = "Value";
             comboBoxTeam.ValueMember = "Key";
-
+            //FTE
+            Dictionary<string, string> fte = new Dictionary<string, string>();
+            fte.Add("1", "1");
+            fte.Add("0.8", "0.8");
+            fte.Add("0.6", "0.6");
+            comboBoxFTE.DataSource = new BindingSource(fte, null);
+            comboBoxFTE.DisplayMember = "Value";
+            comboBoxFTE.ValueMember = "Key";
 
         }
         private void loadEmployees()
@@ -75,7 +80,8 @@ namespace ShiftGenerator
                 var result = from employees in data.Employees
                              join users in data.Users on employees.idUser equals users.idUser
                              join team in data.Teams on employees.idTeam equals team.idTeam
-                             select new {employees.idEmployee, users.login, employees.name, employees.surname, employees.jobContract, team.nameTeam, employees.independent, employees.frenchlvl, users.password,users.permission};
+                             join fte in data.FTEs on employees.idEmployee equals fte.idEmployee
+                             select new {employees.idEmployee, users.login, employees.name, employees.surname, employees.jobContract, team.nameTeam, employees.independent, employees.frenchlvl, users.permission, fte.dimension};
 
                 dataGridViewEmp.DataSource = result;
 
@@ -88,13 +94,17 @@ namespace ShiftGenerator
             {
                 this.Close();
                 Console.Write(ex);
-                //formHandler.lostConnection();
             }
         }
 
+
+        //////////////////////////////////
+        //////////////////////////////////                  ADDING EMPLOYEES
+        //////////////////////////////////
+
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            if(textBoxName.Text != "Name"&& textBoxSurname.Text != "Surname"&&textBoxLogin.Text != "Login"&& textBoxPassword.Text != "Password") {
+            if(textBoxName.Text != "Name"&& textBoxSurname.Text != "Surname"&&textBoxLogin.Text != "Login") {
                 //ComboBoxJobContract
                 string comboContractVal = ((KeyValuePair<string, string>)comboBoxContract.SelectedItem).Value;
                 //ComboBoxFrenchLevel
@@ -103,11 +113,13 @@ namespace ShiftGenerator
                 string comboPermVal = ((KeyValuePair<string, string>)comboBoxPermission.SelectedItem).Value;
                 //ComboBoxPermission
                 string comboTeamVal = ((KeyValuePair<string, string>)comboBoxTeam.SelectedItem).Value;
+                //ComboBoxFTE
+                string comboFTE = ((KeyValuePair<string, string>)comboBoxFTE.SelectedItem).Value;
 
                 ////////////////////////////////////////// USER
                 User user = new User();
                 user.login = textBoxLogin.Text;
-                user.password = textBoxSurname.Text;
+                user.password = PasswordHash.getHash("test");
                 user.permission = comboPermVal;
 
                 data.Users.InsertOnSubmit(user);
@@ -116,7 +128,7 @@ namespace ShiftGenerator
                 ///////////////////////////////////////// EMPLOYEE
                 Employee employee = new Employee();
                 employee.name = textBoxName.Text;
-                employee.surname = textBoxPassword.Text;
+                employee.surname = textBoxSurname.Text;
                 employee.jobContract = comboContractVal;
                 employee.frenchlvl = comboFrenchVal;
                 //idTeam
@@ -139,6 +151,31 @@ namespace ShiftGenerator
                 data.Employees.InsertOnSubmit(employee);
                 try { data.SubmitChanges(); } catch (System.Data.SqlClient.SqlException ex) { Console.WriteLine(ex); }
 
+                /////////////////////////////////     FTE
+
+                FTE newFte = new FTE();
+
+                ///// idEmployee
+                var FTEEmp = (from emp in data.Employees
+                                 orderby emp.idEmployee descending
+                                 select emp.idEmployee).First();
+                newFte.idEmployee = FTEEmp;
+
+                /////// dimension
+                if (comboFTE == "1")
+                {
+                    newFte.dimension = 1;
+                }
+                else if (comboFTE == "0.8")
+                {
+                    newFte.dimension = 0.8;
+                }else if (comboFTE == "0.6")
+                {
+                    newFte.dimension = 0.6;
+                }
+                data.FTEs.InsertOnSubmit(newFte);
+                try { data.SubmitChanges(); } catch (System.Data.SqlClient.SqlException ex) { Console.WriteLine(ex); }
+
                 loadEmployees();
             }
         }
@@ -156,6 +193,11 @@ namespace ShiftGenerator
             return selected;
         }
 
+        ///////////////////////////
+        ///////////////////////////          DELETING EMPLOYEES
+        ///////////////////////////
+
+
         private void buttonDelete_Click(object sender, EventArgs e)
             {
                 try
@@ -169,15 +211,20 @@ namespace ShiftGenerator
                                   where employee.idEmployee == selected
                                   select users).First();
 
-                    //int tempUserId = result.idUser;
                     data.Users.DeleteOnSubmit(result);
 
-                    //DELETING EMPLOYEE
-                    var result2 = (from employee in data.Employees
+                //DELETING FTE
+                var result1 = (from fte in data.FTEs
+                               where fte.idEmployee == selected
+                               select fte).First();
+
+                data.FTEs.DeleteOnSubmit(result1);
+
+                //DELETING EMPLOYEE
+                var result2 = (from employee in data.Employees
                                    where employee.idEmployee == selected
                                    select employee).First();
 
-                    //int tempUserId = result.idUser;
                     data.Employees.DeleteOnSubmit(result2);
 
                     try { data.SubmitChanges(); } catch (System.Data.SqlClient.SqlException ex) { Console.WriteLine(ex); }
@@ -194,6 +241,11 @@ namespace ShiftGenerator
             
         }
 
+        ///////////////////////////
+        ///////////////////////////         EDITING EMPLOYEES
+        ///////////////////////////
+
+
         private void buttonEdit_Click(object sender, EventArgs e)
         {
             int selected = getSelectedIdx(dataGridViewEmp, "idEmployee");
@@ -203,7 +255,6 @@ namespace ShiftGenerator
             textBoxName.Text = toUpdateEmployee.name;
             textBoxSurname.Text = toUpdateEmployee.surname;
             textBoxLogin.Text = toUpdateUser.login;
-            textBoxPassword.Text = toUpdateUser.password;
 
             buttonAdd.Enabled = false;
             buttonEdit.Enabled = false;
@@ -212,6 +263,8 @@ namespace ShiftGenerator
             buttonSave.Enabled = true;
             buttonCancel.Visible = true;
             buttonCancel.Enabled = true;
+            buttonReset.Visible = true;
+            buttonReset.Enabled = true;
 
         }
         private void buttonSave_Click(object sender, EventArgs e)
@@ -224,16 +277,12 @@ namespace ShiftGenerator
             string comboPermVal = ((KeyValuePair<string, string>)comboBoxPermission.SelectedItem).Value;
             //ComboBoxPermission
             string comboTeamVal = ((KeyValuePair<string, string>)comboBoxTeam.SelectedItem).Value;
-
-            //textBoxName.Text = toUpdateEmployee.name;
-            //textBoxSurname.Text = toUpdateEmployee.surname;
-            //textBoxLogin.Text = toUpdateUser.login;
-            //textBoxPassword.Text = toUpdateUser.password;
+            //ComboBoxFTE
+            string comboFTE = ((KeyValuePair<string, string>)comboBoxFTE.SelectedItem).Value;
 
             toUpdateEmployee.name = textBoxName.Text;
             toUpdateEmployee.surname = textBoxSurname.Text;
             toUpdateUser.login = textBoxLogin.Text;
-            toUpdateUser.password = textBoxPassword.Text;
             
 
 
@@ -260,18 +309,13 @@ namespace ShiftGenerator
             buttonSave.Visible = false;
             buttonCancel.Enabled = false;
             buttonCancel.Visible = false;
+            buttonReset.Visible = false;
+            buttonReset.Enabled = false;
+            labelReset.Text = "";
+
             loadEmployees();
 
         }
-
-        //private void textBoxName_Leave(object sender, EventArgs e)
-        //{
-        //    if (textBoxName.Text.Length == 0)
-        //    {
-        //        textBoxName.Text = "Name";
-        //        textBoxName.ForeColor = SystemColors.GrayText;
-        //    }
-        //}
         private void textBoxName_Enter(object sender, EventArgs e)
         {
             if (textBoxName.Text == "Name")
@@ -296,21 +340,12 @@ namespace ShiftGenerator
                 textBoxLogin.ForeColor = SystemColors.WindowText;
             }
         }
-        private void textBoxPassword_Enter(object sender, EventArgs e)
-        {
-            if (textBoxPassword.Text == "Password")
-            {
-                textBoxPassword.Clear();
-                textBoxPassword.ForeColor = SystemColors.WindowText;
-            }
-        }
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
             textBoxName.Text = "Name";
             textBoxSurname.Text = "Surname";
             textBoxLogin.Text = "Login";
-            textBoxPassword.Text = "Password";
 
             buttonAdd.Enabled = true;
             buttonEdit.Enabled = true;
@@ -319,7 +354,40 @@ namespace ShiftGenerator
             buttonSave.Visible = false;
             buttonCancel.Enabled = false;
             buttonCancel.Visible = false;
+            buttonReset.Visible = false;
+            buttonReset.Enabled = false;
+
+            labelReset.Text = "";
         }
+
+        private void buttonReset_Click(object sender, EventArgs e)
+        {
+            int selected = getSelectedIdx(dataGridViewEmp, "idEmployee");
+            toUpdateEmployee = data.Employees.SingleOrDefault(x => x.idEmployee == selected);
+            toUpdateUser = data.Users.SingleOrDefault(x => x.idUser == toUpdateEmployee.idUser);
+
+            toUpdateUser.password = PasswordHash.getHash("Password1234");
+
+            labelReset.Text = "Password changed";
+
+            try { data.SubmitChanges(); } catch (Exception ex) { Console.WriteLine(ex); }
+        }
+
+        //
+        //////////  Function to calculating working days between two dates
+        //
+        //public int GetWorkingDays(DateTime from, DateTime to)
+        //{
+        //    var totalDays = 0;
+        //    for (var date = from; date < to; date = date.AddDays(1))
+        //    {
+        //        if (date.DayOfWeek != DayOfWeek.Saturday
+        //            && date.DayOfWeek != DayOfWeek.Sunday)
+        //            totalDays++;
+        //    }
+
+        //    return totalDays;
+        //}
     }
 }
  

@@ -52,10 +52,12 @@ accepted varchar(10),
 fulfilled bit
 )
 
-CREATE TABLE FTE(
-idFTE int PRIMARY KEY,
-idEmployee int FOREIGN KEY REFERENCES Employees(idEmployee),
-workingHours int,
-workingHoursLast int,
-SPM int
-)
+CREATE TABLE FTE
+           (idFTE int primary key identity(1,1),
+           idEmployee int ,
+		   dimension float,
+           workingHours int,
+           workingHoursLast int,
+           SPM int,
+		   FOREIGN KEY (idEmployee) REFERENCES Employees(idEmployee)
+           )

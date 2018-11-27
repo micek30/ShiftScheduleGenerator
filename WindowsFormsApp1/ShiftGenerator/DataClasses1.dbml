@@ -40,16 +40,6 @@
       <Association Name="Employee_EmpRequirement" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
-  <Table Name="dbo.FTE" Member="FTEs">
-    <Type Name="FTE">
-      <Column Name="idFTE" Type="System.Int32" DbType="Int NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="workingHours" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="workingHoursLast" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="SPM" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Association Name="Employee_FTE" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.Users" Member="Users">
     <Type Name="User">
       <Column Name="idUser" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -71,6 +61,17 @@
     <Type Name="LawRequirement">
       <Column Name="idRequirements" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
       <Column Name="reqDesc" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.FTE" Member="FTEs">
+    <Type Name="FTE">
+      <Column Name="idFTE" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="dimension" Type="System.Double" DbType="Float" CanBeNull="true" />
+      <Column Name="workingHours" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="workingHoursLast" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SPM" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Employee_FTE" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

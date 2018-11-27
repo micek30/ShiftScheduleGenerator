@@ -43,20 +43,17 @@ namespace ShiftGenerator
                         labelMsg.Text = "User not found";
                         labelMsg.Visible = true;
                     }
-                    //else if (PasswordHash.checkPassword(textBoxPass.Text, result.user.pass))
-                    else if (textBoxPass.Text.Equals( result.user.password))
+                    else if (PasswordHash.checkPassword(textBoxPass.Text, result.user.password))
+                    //else if (textBoxPass.Text.Equals( result.user.password))
                     {
 
                         labelMsg.Text = "Zalogowano !!!";
                         labelMsg.Visible = true;
-                        FormMenu formMain = new FormMenu(this);
-                        formMain.Show();
                         if (result.user.permission.Equals("admin"))
                         {
-                            //formMain.Admin = true;
+                            FormMenu formMain = new FormMenu(this);
+                            formMain.Show();
                         }
-                        //formMain.Loggedin = true;
-                        //formMain.loadBox();
                         this.Hide();
                     }
                     else

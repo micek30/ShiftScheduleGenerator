@@ -36,7 +36,6 @@
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.textBoxSurname = new System.Windows.Forms.TextBox();
             this.textBoxLogin = new System.Windows.Forms.TextBox();
-            this.textBoxPassword = new System.Windows.Forms.TextBox();
             this.comboBoxFrenchLvl = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
@@ -47,6 +46,10 @@
             this.comboBoxTeam = new System.Windows.Forms.ComboBox();
             this.checkBoxIndependent = new System.Windows.Forms.CheckBox();
             this.buttonCancel = new System.Windows.Forms.Button();
+            this.comboBoxFTE = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.buttonReset = new System.Windows.Forms.Button();
+            this.labelReset = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEmp)).BeginInit();
             this.SuspendLayout();
             // 
@@ -136,16 +139,6 @@
             this.textBoxLogin.Size = new System.Drawing.Size(209, 32);
             this.textBoxLogin.TabIndex = 8;
             this.textBoxLogin.Text = "Login";
-            // 
-            // textBoxPassword
-            // 
-            this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.8F);
-            this.textBoxPassword.ForeColor = System.Drawing.SystemColors.ScrollBar;
-            this.textBoxPassword.Location = new System.Drawing.Point(160, 513);
-            this.textBoxPassword.Name = "textBoxPassword";
-            this.textBoxPassword.Size = new System.Drawing.Size(209, 32);
-            this.textBoxPassword.TabIndex = 13;
-            this.textBoxPassword.Text = "Password";
             // 
             // comboBoxFrenchLvl
             // 
@@ -248,11 +241,56 @@
             this.buttonCancel.Visible = false;
             this.buttonCancel.Click += new System.EventHandler(this.buttonCancel_Click);
             // 
+            // comboBoxFTE
+            // 
+            this.comboBoxFTE.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
+            this.comboBoxFTE.FormattingEnabled = true;
+            this.comboBoxFTE.Location = new System.Drawing.Point(649, 565);
+            this.comboBoxFTE.Name = "comboBoxFTE";
+            this.comboBoxFTE.Size = new System.Drawing.Size(121, 30);
+            this.comboBoxFTE.TabIndex = 26;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
+            this.label5.Location = new System.Drawing.Point(489, 565);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(47, 24);
+            this.label5.TabIndex = 27;
+            this.label5.Text = "FTE";
+            // 
+            // buttonReset
+            // 
+            this.buttonReset.Enabled = false;
+            this.buttonReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
+            this.buttonReset.Location = new System.Drawing.Point(160, 510);
+            this.buttonReset.Name = "buttonReset";
+            this.buttonReset.Size = new System.Drawing.Size(209, 40);
+            this.buttonReset.TabIndex = 28;
+            this.buttonReset.Text = "Reset Password";
+            this.buttonReset.UseVisualStyleBackColor = true;
+            this.buttonReset.Visible = false;
+            this.buttonReset.Click += new System.EventHandler(this.buttonReset_Click);
+            // 
+            // labelReset
+            // 
+            this.labelReset.AutoSize = true;
+            this.labelReset.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
+            this.labelReset.Location = new System.Drawing.Point(804, 539);
+            this.labelReset.Name = "labelReset";
+            this.labelReset.Size = new System.Drawing.Size(0, 24);
+            this.labelReset.TabIndex = 29;
+            // 
             // FormUsers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(988, 641);
+            this.Controls.Add(this.labelReset);
+            this.Controls.Add(this.buttonReset);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.comboBoxFTE);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.checkBoxIndependent);
             this.Controls.Add(this.comboBoxTeam);
@@ -263,7 +301,6 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBoxFrenchLvl);
-            this.Controls.Add(this.textBoxPassword);
             this.Controls.Add(this.textBoxLogin);
             this.Controls.Add(this.textBoxSurname);
             this.Controls.Add(this.textBoxName);
@@ -274,7 +311,7 @@
             this.Controls.Add(this.dataGridViewEmp);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "FormUsers";
-            this.Text = "FormUsers";
+            this.Text = "User Panel";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewEmp)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -292,7 +329,6 @@
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.TextBox textBoxSurname;
         private System.Windows.Forms.TextBox textBoxLogin;
-        private System.Windows.Forms.TextBox textBoxPassword;
         private System.Windows.Forms.ComboBox comboBoxFrenchLvl;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
@@ -303,5 +339,9 @@
         private System.Windows.Forms.ComboBox comboBoxTeam;
         private System.Windows.Forms.CheckBox checkBoxIndependent;
         private System.Windows.Forms.Button buttonCancel;
+        private System.Windows.Forms.ComboBox comboBoxFTE;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button buttonReset;
+        private System.Windows.Forms.Label labelReset;
     }
 }
