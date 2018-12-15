@@ -54,7 +54,6 @@
             this.labelMsg.TabIndex = 1;
             this.labelMsg.Text = "Generated";
             this.labelMsg.Visible = false;
-            this.labelMsg.Click += new System.EventHandler(this.labelMsg_Click);
             // 
             // dataGridView1
             // 
@@ -69,7 +68,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(881, 510);
+            this.ClientSize = new System.Drawing.Size(874, 297);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.labelMsg);
             this.Controls.Add(this.buttonGenerate);

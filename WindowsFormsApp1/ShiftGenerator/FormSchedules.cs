@@ -12,16 +12,14 @@ namespace ShiftGenerator
 {
     public partial class FormSchedules : Form
     {
-
+        Shift shift = new Shift();
 
         public FormSchedules()
         {
             InitializeComponent();
             this.ActiveControl = dataGridView1;
-            Shift shift = new Shift();
-
-            DateTime thisDate1 = new DateTime(2018, 12, 12);
-            shift.fillShiftEmp(thisDate1,"D");
+            DateTime date = new DateTime(2018, 12, 12);
+            shift.fillShiftEmp(date,"D","Language");
             dataGridView1.DataSource = shift.EmployeesAvailable;
 
             for (int i = 0; i < dataGridView1.Columns.Count; i++)
@@ -30,24 +28,21 @@ namespace ShiftGenerator
             }
         }
 
-
-        public void FillMatrix()
-        {
-
-        }
-
         private void buttonGenerate_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void labelMsg_Click(object sender, EventArgs e)
+        private void chooseEmployees(Shift shift, String shiftTime)
         {
-
+           
         }
+
     }
 }
 
+//////////////////  tworzenie excella
+///
 //            using (ExcelPackage excel = new ExcelPackage())
 //            {
 //                excel.Workbook.Worksheets.Add("Worksheet1");
