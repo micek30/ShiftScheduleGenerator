@@ -10,34 +10,11 @@
       <Column Name="independent" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="frenchlvl" Type="System.String" DbType="VarChar(5)" CanBeNull="true" />
       <Column Name="idUser" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="Employee_FTE" Member="FTEs" ThisKey="idEmployee" OtherKey="idEmployee" Type="FTE" />
       <Association Name="Employee_EmpRequest" Member="EmpRequests" ThisKey="idEmployee" OtherKey="idEmployee" Type="EmpRequest" />
       <Association Name="Employee_EmpRequirement" Member="EmpRequirements" ThisKey="idEmployee" OtherKey="idEmployee" Type="EmpRequirement" />
-      <Association Name="Employee_FTE" Member="FTEs" ThisKey="idEmployee" OtherKey="idEmployee" Type="FTE" />
       <Association Name="User_Employee" Member="User" ThisKey="idUser" OtherKey="idUser" Type="User" IsForeignKey="true" />
       <Association Name="Team_Employee" Member="Team" ThisKey="idTeam" OtherKey="idTeam" Type="Team" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.EmpRequests" Member="EmpRequests">
-    <Type Name="EmpRequest">
-      <Column Name="idEmpRequest" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="reqDesc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="dateReq" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="dayNight" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
-      <Column Name="accepted" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
-      <Column Name="fulfilled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="Employee_EmpRequest" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.EmpRequirements" Member="EmpRequirements">
-    <Type Name="EmpRequirement">
-      <Column Name="idEmpRequirements" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="reqDesc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="dateReq" Type="System.DateTime" DbType="Date" CanBeNull="true" />
-      <Column Name="dayNight" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
-      <Column Name="fulfilled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="Employee_EmpRequirement" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
   <Table Name="dbo.Users" Member="Users">
@@ -72,6 +49,29 @@
       <Column Name="workingHoursLast" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Column Name="SPM" Type="System.Int32" DbType="Int" CanBeNull="true" />
       <Association Name="Employee_FTE" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmpRequests" Member="EmpRequests">
+    <Type Name="EmpRequest">
+      <Column Name="idEmpRequest" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="reqDesc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="dateReq" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="dayNight" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="accepted" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="fulfilled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Employee_EmpRequest" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.EmpRequirements" Member="EmpRequirements">
+    <Type Name="EmpRequirement">
+      <Column Name="idEmpRequirements" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="idEmployee" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="reqDesc" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="dateReq" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="dayNight" Type="System.String" DbType="VarChar(1)" CanBeNull="true" />
+      <Column Name="fulfilled" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Employee_EmpRequirement" Member="Employee" ThisKey="idEmployee" OtherKey="idEmployee" Type="Employee" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

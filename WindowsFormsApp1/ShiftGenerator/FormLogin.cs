@@ -13,12 +13,13 @@ namespace ShiftGenerator
     public partial class FormLogin : Form
     {
         DataClasses1DataContext data;
-        private FormMenu formLog;
+        //private FormMenu formLog;
 
         public FormLogin()
         {
             InitializeComponent();
             data = new DataClasses1DataContext();
+            this.ActiveControl = buttonLogin;
         }
 
         private void buttonLogin_Click(object sender, EventArgs e)
@@ -44,16 +45,12 @@ namespace ShiftGenerator
                         labelMsg.Visible = true;
                     }
                     else if (PasswordHash.checkPassword(textBoxPass.Text, result.user.password))
-                    //else if (textBoxPass.Text.Equals( result.user.password))
                     {
 
                         labelMsg.Text = "Zalogowano !!!";
                         labelMsg.Visible = true;
-                        if (result.user.permission.Equals("admin"))
-                        {
-                            FormMenu formMain = new FormMenu(this);
-                            formMain.Show();
-                        }
+                        FormMenu formMain = new FormMenu(this, result.user);
+                        formMain.Show();
                         this.Hide();
                     }
                     else
@@ -79,6 +76,18 @@ namespace ShiftGenerator
         private void FormLogin_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBoxLogin_Enter(object sender, EventArgs e)
+        {
+            textBoxLogin.Clear();
+            textBoxLogin.ForeColor = SystemColors.WindowText;
+        }
+
+        private void textBoxPass_Enter(object sender, EventArgs e)
+        {
+            textBoxPass.Clear();
+            textBoxPass.ForeColor = SystemColors.WindowText;
         }
     }
 }

@@ -16,12 +16,12 @@ namespace ShiftGenerator
         FormMenu formHandler;
         public Employee toUpdateEmployee;
         public User toUpdateUser;
+        public FTE toUpdateFTE;
         public FormUsers(FormMenu form)
         {
-
-            
-                InitializeComponent();
-                this.formHandler = form;
+            InitializeComponent();
+            this.ActiveControl = dataGridViewEmp;
+            this.formHandler = form;
                 data = new DataClasses1DataContext();
                 loadEmployees();
 
@@ -251,11 +251,13 @@ namespace ShiftGenerator
             int selected = getSelectedIdx(dataGridViewEmp, "idEmployee");
             toUpdateEmployee = data.Employees.SingleOrDefault(x => x.idEmployee == selected);
             toUpdateUser = data.Users.SingleOrDefault(x => x.idUser == toUpdateEmployee.idUser);
+            toUpdateFTE = data.FTEs.SingleOrDefault(x => x.idEmployee == selected);
 
             textBoxName.Text = toUpdateEmployee.name;
             textBoxSurname.Text = toUpdateEmployee.surname;
             textBoxLogin.Text = toUpdateUser.login;
 
+                    
             buttonAdd.Enabled = false;
             buttonEdit.Enabled = false;
             buttonDelete.Enabled = false;
@@ -280,11 +282,33 @@ namespace ShiftGenerator
             //ComboBoxFTE
             string comboFTE = ((KeyValuePair<string, string>)comboBoxFTE.SelectedItem).Value;
 
+
+            ///////////////////////////////// USER
+            toUpdateUser.login = textBoxLogin.Text;
+
+            
+            /////////////////////////////////     FTE
+            /////// dimension
+            if (comboFTE == "1")
+            {
+                toUpdateFTE.dimension = 1;
+            }
+            else if (comboFTE == "0.8")
+            {
+                toUpdateFTE.dimension = 0.8;
+            }
+            else if (comboFTE == "0.6")
+            {
+                toUpdateFTE.dimension = 0.6;
+            }
+
+
+
+            ///////////////////////////////// EMPLOYEE
             toUpdateEmployee.name = textBoxName.Text;
             toUpdateEmployee.surname = textBoxSurname.Text;
-            toUpdateUser.login = textBoxLogin.Text;
-            
-
+            toUpdateEmployee.jobContract = comboContractVal;
+            toUpdateEmployee.frenchlvl = comboFrenchVal;
 
             //idTeam
             if (comboTeamVal == "Channels")

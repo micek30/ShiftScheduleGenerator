@@ -33,12 +33,6 @@ namespace ShiftGenerator
     partial void InsertEmployee(Employee instance);
     partial void UpdateEmployee(Employee instance);
     partial void DeleteEmployee(Employee instance);
-    partial void InsertEmpRequest(EmpRequest instance);
-    partial void UpdateEmpRequest(EmpRequest instance);
-    partial void DeleteEmpRequest(EmpRequest instance);
-    partial void InsertEmpRequirement(EmpRequirement instance);
-    partial void UpdateEmpRequirement(EmpRequirement instance);
-    partial void DeleteEmpRequirement(EmpRequirement instance);
     partial void InsertUser(User instance);
     partial void UpdateUser(User instance);
     partial void DeleteUser(User instance);
@@ -51,6 +45,12 @@ namespace ShiftGenerator
     partial void InsertFTE(FTE instance);
     partial void UpdateFTE(FTE instance);
     partial void DeleteFTE(FTE instance);
+    partial void InsertEmpRequest(EmpRequest instance);
+    partial void UpdateEmpRequest(EmpRequest instance);
+    partial void DeleteEmpRequest(EmpRequest instance);
+    partial void InsertEmpRequirement(EmpRequirement instance);
+    partial void UpdateEmpRequirement(EmpRequirement instance);
+    partial void DeleteEmpRequirement(EmpRequirement instance);
     #endregion
 		
 		public DataClasses1DataContext() : 
@@ -91,22 +91,6 @@ namespace ShiftGenerator
 			}
 		}
 		
-		public System.Data.Linq.Table<EmpRequest> EmpRequests
-		{
-			get
-			{
-				return this.GetTable<EmpRequest>();
-			}
-		}
-		
-		public System.Data.Linq.Table<EmpRequirement> EmpRequirements
-		{
-			get
-			{
-				return this.GetTable<EmpRequirement>();
-			}
-		}
-		
 		public System.Data.Linq.Table<User> Users
 		{
 			get
@@ -138,6 +122,22 @@ namespace ShiftGenerator
 				return this.GetTable<FTE>();
 			}
 		}
+		
+		public System.Data.Linq.Table<EmpRequest> EmpRequests
+		{
+			get
+			{
+				return this.GetTable<EmpRequest>();
+			}
+		}
+		
+		public System.Data.Linq.Table<EmpRequirement> EmpRequirements
+		{
+			get
+			{
+				return this.GetTable<EmpRequirement>();
+			}
+		}
 	}
 	
 	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Employees")]
@@ -162,11 +162,11 @@ namespace ShiftGenerator
 		
 		private System.Nullable<int> _idUser;
 		
+		private EntitySet<FTE> _FTEs;
+		
 		private EntitySet<EmpRequest> _EmpRequests;
 		
 		private EntitySet<EmpRequirement> _EmpRequirements;
-		
-		private EntitySet<FTE> _FTEs;
 		
 		private EntityRef<User> _User;
 		
@@ -196,9 +196,9 @@ namespace ShiftGenerator
 		
 		public Employee()
 		{
+			this._FTEs = new EntitySet<FTE>(new Action<FTE>(this.attach_FTEs), new Action<FTE>(this.detach_FTEs));
 			this._EmpRequests = new EntitySet<EmpRequest>(new Action<EmpRequest>(this.attach_EmpRequests), new Action<EmpRequest>(this.detach_EmpRequests));
 			this._EmpRequirements = new EntitySet<EmpRequirement>(new Action<EmpRequirement>(this.attach_EmpRequirements), new Action<EmpRequirement>(this.detach_EmpRequirements));
-			this._FTEs = new EntitySet<FTE>(new Action<FTE>(this.attach_FTEs), new Action<FTE>(this.detach_FTEs));
 			this._User = default(EntityRef<User>);
 			this._Team = default(EntityRef<Team>);
 			OnCreated();
@@ -372,6 +372,19 @@ namespace ShiftGenerator
 			}
 		}
 		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_FTE", Storage="_FTEs", ThisKey="idEmployee", OtherKey="idEmployee")]
+		public EntitySet<FTE> FTEs
+		{
+			get
+			{
+				return this._FTEs;
+			}
+			set
+			{
+				this._FTEs.Assign(value);
+			}
+		}
+		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_EmpRequest", Storage="_EmpRequests", ThisKey="idEmployee", OtherKey="idEmployee")]
 		public EntitySet<EmpRequest> EmpRequests
 		{
@@ -395,19 +408,6 @@ namespace ShiftGenerator
 			set
 			{
 				this._EmpRequirements.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_FTE", Storage="_FTEs", ThisKey="idEmployee", OtherKey="idEmployee")]
-		public EntitySet<FTE> FTEs
-		{
-			get
-			{
-				return this._FTEs;
-			}
-			set
-			{
-				this._FTEs.Assign(value);
 			}
 		}
 		
@@ -499,6 +499,18 @@ namespace ShiftGenerator
 			}
 		}
 		
+		private void attach_FTEs(FTE entity)
+		{
+			this.SendPropertyChanging();
+			entity.Employee = this;
+		}
+		
+		private void detach_FTEs(FTE entity)
+		{
+			this.SendPropertyChanging();
+			entity.Employee = null;
+		}
+		
 		private void attach_EmpRequests(EmpRequest entity)
 		{
 			this.SendPropertyChanging();
@@ -521,488 +533,6 @@ namespace ShiftGenerator
 		{
 			this.SendPropertyChanging();
 			entity.Employee = null;
-		}
-		
-		private void attach_FTEs(FTE entity)
-		{
-			this.SendPropertyChanging();
-			entity.Employee = this;
-		}
-		
-		private void detach_FTEs(FTE entity)
-		{
-			this.SendPropertyChanging();
-			entity.Employee = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.EmpRequests")]
-	public partial class EmpRequest : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _idEmpRequest;
-		
-		private System.Nullable<int> _idEmployee;
-		
-		private string _reqDesc;
-		
-		private System.Nullable<System.DateTime> _dateReq;
-		
-		private string _dayNight;
-		
-		private string _accepted;
-		
-		private System.Nullable<bool> _fulfilled;
-		
-		private EntityRef<Employee> _Employee;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidEmpRequestChanging(int value);
-    partial void OnidEmpRequestChanged();
-    partial void OnidEmployeeChanging(System.Nullable<int> value);
-    partial void OnidEmployeeChanged();
-    partial void OnreqDescChanging(string value);
-    partial void OnreqDescChanged();
-    partial void OndateReqChanging(System.Nullable<System.DateTime> value);
-    partial void OndateReqChanged();
-    partial void OndayNightChanging(string value);
-    partial void OndayNightChanged();
-    partial void OnacceptedChanging(string value);
-    partial void OnacceptedChanged();
-    partial void OnfulfilledChanging(System.Nullable<bool> value);
-    partial void OnfulfilledChanged();
-    #endregion
-		
-		public EmpRequest()
-		{
-			this._Employee = default(EntityRef<Employee>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmpRequest", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int idEmpRequest
-		{
-			get
-			{
-				return this._idEmpRequest;
-			}
-			set
-			{
-				if ((this._idEmpRequest != value))
-				{
-					this.OnidEmpRequestChanging(value);
-					this.SendPropertyChanging();
-					this._idEmpRequest = value;
-					this.SendPropertyChanged("idEmpRequest");
-					this.OnidEmpRequestChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmployee", DbType="Int")]
-		public System.Nullable<int> idEmployee
-		{
-			get
-			{
-				return this._idEmployee;
-			}
-			set
-			{
-				if ((this._idEmployee != value))
-				{
-					if (this._Employee.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnidEmployeeChanging(value);
-					this.SendPropertyChanging();
-					this._idEmployee = value;
-					this.SendPropertyChanged("idEmployee");
-					this.OnidEmployeeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reqDesc", DbType="VarChar(50)")]
-		public string reqDesc
-		{
-			get
-			{
-				return this._reqDesc;
-			}
-			set
-			{
-				if ((this._reqDesc != value))
-				{
-					this.OnreqDescChanging(value);
-					this.SendPropertyChanging();
-					this._reqDesc = value;
-					this.SendPropertyChanged("reqDesc");
-					this.OnreqDescChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dateReq", DbType="Date")]
-		public System.Nullable<System.DateTime> dateReq
-		{
-			get
-			{
-				return this._dateReq;
-			}
-			set
-			{
-				if ((this._dateReq != value))
-				{
-					this.OndateReqChanging(value);
-					this.SendPropertyChanging();
-					this._dateReq = value;
-					this.SendPropertyChanged("dateReq");
-					this.OndateReqChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dayNight", DbType="VarChar(1)")]
-		public string dayNight
-		{
-			get
-			{
-				return this._dayNight;
-			}
-			set
-			{
-				if ((this._dayNight != value))
-				{
-					this.OndayNightChanging(value);
-					this.SendPropertyChanging();
-					this._dayNight = value;
-					this.SendPropertyChanged("dayNight");
-					this.OndayNightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_accepted", DbType="VarChar(10)")]
-		public string accepted
-		{
-			get
-			{
-				return this._accepted;
-			}
-			set
-			{
-				if ((this._accepted != value))
-				{
-					this.OnacceptedChanging(value);
-					this.SendPropertyChanging();
-					this._accepted = value;
-					this.SendPropertyChanged("accepted");
-					this.OnacceptedChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fulfilled", DbType="Bit")]
-		public System.Nullable<bool> fulfilled
-		{
-			get
-			{
-				return this._fulfilled;
-			}
-			set
-			{
-				if ((this._fulfilled != value))
-				{
-					this.OnfulfilledChanging(value);
-					this.SendPropertyChanging();
-					this._fulfilled = value;
-					this.SendPropertyChanged("fulfilled");
-					this.OnfulfilledChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_EmpRequest", Storage="_Employee", ThisKey="idEmployee", OtherKey="idEmployee", IsForeignKey=true)]
-		public Employee Employee
-		{
-			get
-			{
-				return this._Employee.Entity;
-			}
-			set
-			{
-				Employee previousValue = this._Employee.Entity;
-				if (((previousValue != value) 
-							|| (this._Employee.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Employee.Entity = null;
-						previousValue.EmpRequests.Remove(this);
-					}
-					this._Employee.Entity = value;
-					if ((value != null))
-					{
-						value.EmpRequests.Add(this);
-						this._idEmployee = value.idEmployee;
-					}
-					else
-					{
-						this._idEmployee = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Employee");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.EmpRequirements")]
-	public partial class EmpRequirement : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _idEmpRequirements;
-		
-		private System.Nullable<int> _idEmployee;
-		
-		private string _reqDesc;
-		
-		private System.Nullable<System.DateTime> _dateReq;
-		
-		private string _dayNight;
-		
-		private System.Nullable<bool> _fulfilled;
-		
-		private EntityRef<Employee> _Employee;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidEmpRequirementsChanging(int value);
-    partial void OnidEmpRequirementsChanged();
-    partial void OnidEmployeeChanging(System.Nullable<int> value);
-    partial void OnidEmployeeChanged();
-    partial void OnreqDescChanging(string value);
-    partial void OnreqDescChanged();
-    partial void OndateReqChanging(System.Nullable<System.DateTime> value);
-    partial void OndateReqChanged();
-    partial void OndayNightChanging(string value);
-    partial void OndayNightChanged();
-    partial void OnfulfilledChanging(System.Nullable<bool> value);
-    partial void OnfulfilledChanged();
-    #endregion
-		
-		public EmpRequirement()
-		{
-			this._Employee = default(EntityRef<Employee>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmpRequirements", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int idEmpRequirements
-		{
-			get
-			{
-				return this._idEmpRequirements;
-			}
-			set
-			{
-				if ((this._idEmpRequirements != value))
-				{
-					this.OnidEmpRequirementsChanging(value);
-					this.SendPropertyChanging();
-					this._idEmpRequirements = value;
-					this.SendPropertyChanged("idEmpRequirements");
-					this.OnidEmpRequirementsChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmployee", DbType="Int")]
-		public System.Nullable<int> idEmployee
-		{
-			get
-			{
-				return this._idEmployee;
-			}
-			set
-			{
-				if ((this._idEmployee != value))
-				{
-					if (this._Employee.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnidEmployeeChanging(value);
-					this.SendPropertyChanging();
-					this._idEmployee = value;
-					this.SendPropertyChanged("idEmployee");
-					this.OnidEmployeeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reqDesc", DbType="VarChar(50)")]
-		public string reqDesc
-		{
-			get
-			{
-				return this._reqDesc;
-			}
-			set
-			{
-				if ((this._reqDesc != value))
-				{
-					this.OnreqDescChanging(value);
-					this.SendPropertyChanging();
-					this._reqDesc = value;
-					this.SendPropertyChanged("reqDesc");
-					this.OnreqDescChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dateReq", DbType="Date")]
-		public System.Nullable<System.DateTime> dateReq
-		{
-			get
-			{
-				return this._dateReq;
-			}
-			set
-			{
-				if ((this._dateReq != value))
-				{
-					this.OndateReqChanging(value);
-					this.SendPropertyChanging();
-					this._dateReq = value;
-					this.SendPropertyChanged("dateReq");
-					this.OndateReqChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dayNight", DbType="VarChar(1)")]
-		public string dayNight
-		{
-			get
-			{
-				return this._dayNight;
-			}
-			set
-			{
-				if ((this._dayNight != value))
-				{
-					this.OndayNightChanging(value);
-					this.SendPropertyChanging();
-					this._dayNight = value;
-					this.SendPropertyChanged("dayNight");
-					this.OndayNightChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fulfilled", DbType="Bit")]
-		public System.Nullable<bool> fulfilled
-		{
-			get
-			{
-				return this._fulfilled;
-			}
-			set
-			{
-				if ((this._fulfilled != value))
-				{
-					this.OnfulfilledChanging(value);
-					this.SendPropertyChanging();
-					this._fulfilled = value;
-					this.SendPropertyChanged("fulfilled");
-					this.OnfulfilledChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_EmpRequirement", Storage="_Employee", ThisKey="idEmployee", OtherKey="idEmployee", IsForeignKey=true)]
-		public Employee Employee
-		{
-			get
-			{
-				return this._Employee.Entity;
-			}
-			set
-			{
-				Employee previousValue = this._Employee.Entity;
-				if (((previousValue != value) 
-							|| (this._Employee.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Employee.Entity = null;
-						previousValue.EmpRequirements.Remove(this);
-					}
-					this._Employee.Entity = value;
-					if ((value != null))
-					{
-						value.EmpRequirements.Add(this);
-						this._idEmployee = value.idEmployee;
-					}
-					else
-					{
-						this._idEmployee = default(Nullable<int>);
-					}
-					this.SendPropertyChanged("Employee");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -1583,6 +1113,476 @@ namespace ShiftGenerator
 					if ((value != null))
 					{
 						value.FTEs.Add(this);
+						this._idEmployee = value.idEmployee;
+					}
+					else
+					{
+						this._idEmployee = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Employee");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.EmpRequests")]
+	public partial class EmpRequest : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _idEmpRequest;
+		
+		private System.Nullable<int> _idEmployee;
+		
+		private string _reqDesc;
+		
+		private System.Nullable<System.DateTime> _dateReq;
+		
+		private string _dayNight;
+		
+		private string _accepted;
+		
+		private System.Nullable<bool> _fulfilled;
+		
+		private EntityRef<Employee> _Employee;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidEmpRequestChanging(int value);
+    partial void OnidEmpRequestChanged();
+    partial void OnidEmployeeChanging(System.Nullable<int> value);
+    partial void OnidEmployeeChanged();
+    partial void OnreqDescChanging(string value);
+    partial void OnreqDescChanged();
+    partial void OndateReqChanging(System.Nullable<System.DateTime> value);
+    partial void OndateReqChanged();
+    partial void OndayNightChanging(string value);
+    partial void OndayNightChanged();
+    partial void OnacceptedChanging(string value);
+    partial void OnacceptedChanged();
+    partial void OnfulfilledChanging(System.Nullable<bool> value);
+    partial void OnfulfilledChanged();
+    #endregion
+		
+		public EmpRequest()
+		{
+			this._Employee = default(EntityRef<Employee>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmpRequest", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int idEmpRequest
+		{
+			get
+			{
+				return this._idEmpRequest;
+			}
+			set
+			{
+				if ((this._idEmpRequest != value))
+				{
+					this.OnidEmpRequestChanging(value);
+					this.SendPropertyChanging();
+					this._idEmpRequest = value;
+					this.SendPropertyChanged("idEmpRequest");
+					this.OnidEmpRequestChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmployee", DbType="Int")]
+		public System.Nullable<int> idEmployee
+		{
+			get
+			{
+				return this._idEmployee;
+			}
+			set
+			{
+				if ((this._idEmployee != value))
+				{
+					if (this._Employee.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidEmployeeChanging(value);
+					this.SendPropertyChanging();
+					this._idEmployee = value;
+					this.SendPropertyChanged("idEmployee");
+					this.OnidEmployeeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reqDesc", DbType="VarChar(50)")]
+		public string reqDesc
+		{
+			get
+			{
+				return this._reqDesc;
+			}
+			set
+			{
+				if ((this._reqDesc != value))
+				{
+					this.OnreqDescChanging(value);
+					this.SendPropertyChanging();
+					this._reqDesc = value;
+					this.SendPropertyChanged("reqDesc");
+					this.OnreqDescChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dateReq", DbType="Date")]
+		public System.Nullable<System.DateTime> dateReq
+		{
+			get
+			{
+				return this._dateReq;
+			}
+			set
+			{
+				if ((this._dateReq != value))
+				{
+					this.OndateReqChanging(value);
+					this.SendPropertyChanging();
+					this._dateReq = value;
+					this.SendPropertyChanged("dateReq");
+					this.OndateReqChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dayNight", DbType="VarChar(1)")]
+		public string dayNight
+		{
+			get
+			{
+				return this._dayNight;
+			}
+			set
+			{
+				if ((this._dayNight != value))
+				{
+					this.OndayNightChanging(value);
+					this.SendPropertyChanging();
+					this._dayNight = value;
+					this.SendPropertyChanged("dayNight");
+					this.OndayNightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_accepted", DbType="VarChar(10)")]
+		public string accepted
+		{
+			get
+			{
+				return this._accepted;
+			}
+			set
+			{
+				if ((this._accepted != value))
+				{
+					this.OnacceptedChanging(value);
+					this.SendPropertyChanging();
+					this._accepted = value;
+					this.SendPropertyChanged("accepted");
+					this.OnacceptedChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fulfilled", DbType="Bit")]
+		public System.Nullable<bool> fulfilled
+		{
+			get
+			{
+				return this._fulfilled;
+			}
+			set
+			{
+				if ((this._fulfilled != value))
+				{
+					this.OnfulfilledChanging(value);
+					this.SendPropertyChanging();
+					this._fulfilled = value;
+					this.SendPropertyChanged("fulfilled");
+					this.OnfulfilledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_EmpRequest", Storage="_Employee", ThisKey="idEmployee", OtherKey="idEmployee", IsForeignKey=true)]
+		public Employee Employee
+		{
+			get
+			{
+				return this._Employee.Entity;
+			}
+			set
+			{
+				Employee previousValue = this._Employee.Entity;
+				if (((previousValue != value) 
+							|| (this._Employee.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Employee.Entity = null;
+						previousValue.EmpRequests.Remove(this);
+					}
+					this._Employee.Entity = value;
+					if ((value != null))
+					{
+						value.EmpRequests.Add(this);
+						this._idEmployee = value.idEmployee;
+					}
+					else
+					{
+						this._idEmployee = default(Nullable<int>);
+					}
+					this.SendPropertyChanged("Employee");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.EmpRequirements")]
+	public partial class EmpRequirement : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _idEmpRequirements;
+		
+		private System.Nullable<int> _idEmployee;
+		
+		private string _reqDesc;
+		
+		private System.Nullable<System.DateTime> _dateReq;
+		
+		private string _dayNight;
+		
+		private System.Nullable<bool> _fulfilled;
+		
+		private EntityRef<Employee> _Employee;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnidEmpRequirementsChanging(int value);
+    partial void OnidEmpRequirementsChanged();
+    partial void OnidEmployeeChanging(System.Nullable<int> value);
+    partial void OnidEmployeeChanged();
+    partial void OnreqDescChanging(string value);
+    partial void OnreqDescChanged();
+    partial void OndateReqChanging(System.Nullable<System.DateTime> value);
+    partial void OndateReqChanged();
+    partial void OndayNightChanging(string value);
+    partial void OndayNightChanged();
+    partial void OnfulfilledChanging(System.Nullable<bool> value);
+    partial void OnfulfilledChanged();
+    #endregion
+		
+		public EmpRequirement()
+		{
+			this._Employee = default(EntityRef<Employee>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmpRequirements", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int idEmpRequirements
+		{
+			get
+			{
+				return this._idEmpRequirements;
+			}
+			set
+			{
+				if ((this._idEmpRequirements != value))
+				{
+					this.OnidEmpRequirementsChanging(value);
+					this.SendPropertyChanging();
+					this._idEmpRequirements = value;
+					this.SendPropertyChanged("idEmpRequirements");
+					this.OnidEmpRequirementsChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_idEmployee", DbType="Int")]
+		public System.Nullable<int> idEmployee
+		{
+			get
+			{
+				return this._idEmployee;
+			}
+			set
+			{
+				if ((this._idEmployee != value))
+				{
+					if (this._Employee.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnidEmployeeChanging(value);
+					this.SendPropertyChanging();
+					this._idEmployee = value;
+					this.SendPropertyChanged("idEmployee");
+					this.OnidEmployeeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_reqDesc", DbType="VarChar(50)")]
+		public string reqDesc
+		{
+			get
+			{
+				return this._reqDesc;
+			}
+			set
+			{
+				if ((this._reqDesc != value))
+				{
+					this.OnreqDescChanging(value);
+					this.SendPropertyChanging();
+					this._reqDesc = value;
+					this.SendPropertyChanged("reqDesc");
+					this.OnreqDescChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dateReq", DbType="Date")]
+		public System.Nullable<System.DateTime> dateReq
+		{
+			get
+			{
+				return this._dateReq;
+			}
+			set
+			{
+				if ((this._dateReq != value))
+				{
+					this.OndateReqChanging(value);
+					this.SendPropertyChanging();
+					this._dateReq = value;
+					this.SendPropertyChanged("dateReq");
+					this.OndateReqChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_dayNight", DbType="VarChar(1)")]
+		public string dayNight
+		{
+			get
+			{
+				return this._dayNight;
+			}
+			set
+			{
+				if ((this._dayNight != value))
+				{
+					this.OndayNightChanging(value);
+					this.SendPropertyChanging();
+					this._dayNight = value;
+					this.SendPropertyChanged("dayNight");
+					this.OndayNightChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_fulfilled", DbType="Bit")]
+		public System.Nullable<bool> fulfilled
+		{
+			get
+			{
+				return this._fulfilled;
+			}
+			set
+			{
+				if ((this._fulfilled != value))
+				{
+					this.OnfulfilledChanging(value);
+					this.SendPropertyChanging();
+					this._fulfilled = value;
+					this.SendPropertyChanged("fulfilled");
+					this.OnfulfilledChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Employee_EmpRequirement", Storage="_Employee", ThisKey="idEmployee", OtherKey="idEmployee", IsForeignKey=true)]
+		public Employee Employee
+		{
+			get
+			{
+				return this._Employee.Entity;
+			}
+			set
+			{
+				Employee previousValue = this._Employee.Entity;
+				if (((previousValue != value) 
+							|| (this._Employee.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Employee.Entity = null;
+						previousValue.EmpRequirements.Remove(this);
+					}
+					this._Employee.Entity = value;
+					if ((value != null))
+					{
+						value.EmpRequirements.Add(this);
 						this._idEmployee = value.idEmployee;
 					}
 					else

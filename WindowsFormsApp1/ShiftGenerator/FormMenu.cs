@@ -15,20 +15,28 @@ namespace ShiftGenerator
     public partial class FormMenu : Form
     {
         private FormLogin formLogin;
-        private bool admin, loggedin;
+        private bool admin;
+        public User user = new User();
         DataClasses1DataContext data;
-        public bool Loggedin { get => loggedin; set => loggedin = value; }
         public bool Admin { get => admin; set => admin = value; }
 
 
-        public FormMenu()
+        public FormMenu(FormLogin formLogin, User user)
         {
             InitializeComponent();
-        }
+            this.user = user;
+            //if (user.permission.Equals("admin")) admin = true;
+            if (user.permission.Equals("admin"))
+            {
+                admin = true;
+            }
+            else
+            {
+                btnSchedules.Enabled = false;
+                btnSchedules.Visible = false;
+            }
 
-        public FormMenu(FormLogin formLogin)
-        {
-            InitializeComponent();
+
             data = new DataClasses1DataContext();
             this.formLogin = formLogin;
         }
@@ -40,9 +48,16 @@ namespace ShiftGenerator
 
         private void btnUsersPnl_Click(object sender, EventArgs e)
         {
-            FormUsers formUsers = new FormUsers(this);
-            formUsers.Show();
-            //this.Hide();
+            if (admin)
+            {
+                FormUsers formUsers = new FormUsers(this);
+                formUsers.Show();
+            }
+            else
+            {
+                FormGuestUsrPnl formGuestUsrPnl = new FormGuestUsrPnl(this,this.user);
+                formGuestUsrPnl.Show();
+            }
         }
 
         private void FormMain_Load(object sender, EventArgs e)
@@ -63,27 +78,8 @@ namespace ShiftGenerator
 
         private void btnSchedules_Click(object sender, EventArgs e)
         {
-            using (ExcelPackage excel = new ExcelPackage())
-            {
-                excel.Workbook.Worksheets.Add("Worksheet1");
-                excel.Workbook.Worksheets.Add("Worksheet2");
-                excel.Workbook.Worksheets.Add("Worksheet3");
-
-
-
-                var excelWorksheet = excel.Workbook.Worksheets["Worksheet1"];
-
-                List<string[]> headerRow = new List<string[]>()
-                    {
-                      new string[] { "ID", "First Name", "Last Name", "DOB" }
-                    };
-
-                string headerRange = "A1:" + Char.ConvertFromUtf32(headerRow[0].Length + 64) + "1";
-                excelWorksheet.Cells[headerRange].LoadFromArrays(headerRow);
-
-                FileInfo excelFile = new FileInfo(@"C:\test.xlsx");
-                excel.SaveAs(excelFile);
-            }
+            FormSchedules formSchedules = new FormSchedules();
+            formSchedules.Show();
         }
 
         //protected override void OnFormClosing(FormClosingEventArgs e)

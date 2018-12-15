@@ -38,28 +38,33 @@
             // 
             this.textBoxLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.4F);
             this.textBoxLogin.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.textBoxLogin.Location = new System.Drawing.Point(43, 46);
+            this.textBoxLogin.Location = new System.Drawing.Point(57, 57);
+            this.textBoxLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxLogin.Name = "textBoxLogin";
-            this.textBoxLogin.Size = new System.Drawing.Size(207, 38);
+            this.textBoxLogin.Size = new System.Drawing.Size(275, 46);
             this.textBoxLogin.TabIndex = 0;
             this.textBoxLogin.Text = "Login...";
+            this.textBoxLogin.Enter += new System.EventHandler(this.textBoxLogin_Enter);
             // 
             // textBoxPass
             // 
             this.textBoxPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.textBoxPass.ForeColor = System.Drawing.SystemColors.WindowFrame;
-            this.textBoxPass.Location = new System.Drawing.Point(43, 104);
+            this.textBoxPass.Location = new System.Drawing.Point(57, 128);
+            this.textBoxPass.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.textBoxPass.Name = "textBoxPass";
             this.textBoxPass.PasswordChar = '*';
-            this.textBoxPass.Size = new System.Drawing.Size(207, 38);
+            this.textBoxPass.Size = new System.Drawing.Size(275, 46);
             this.textBoxPass.TabIndex = 1;
             this.textBoxPass.Text = "Password...";
+            this.textBoxPass.Enter += new System.EventHandler(this.textBoxPass_Enter);
             // 
             // buttonLogin
             // 
-            this.buttonLogin.Location = new System.Drawing.Point(92, 163);
+            this.buttonLogin.Location = new System.Drawing.Point(123, 201);
+            this.buttonLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.buttonLogin.Name = "buttonLogin";
-            this.buttonLogin.Size = new System.Drawing.Size(117, 42);
+            this.buttonLogin.Size = new System.Drawing.Size(156, 52);
             this.buttonLogin.TabIndex = 2;
             this.buttonLogin.Text = "Log in";
             this.buttonLogin.UseVisualStyleBackColor = true;
@@ -68,20 +73,22 @@
             // labelMsg
             // 
             this.labelMsg.AutoSize = true;
-            this.labelMsg.Location = new System.Drawing.Point(129, 219);
+            this.labelMsg.Location = new System.Drawing.Point(172, 270);
+            this.labelMsg.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.labelMsg.Name = "labelMsg";
-            this.labelMsg.Size = new System.Drawing.Size(0, 13);
+            this.labelMsg.Size = new System.Drawing.Size(0, 17);
             this.labelMsg.TabIndex = 3;
             // 
             // FormLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(315, 241);
+            this.ClientSize = new System.Drawing.Size(420, 297);
             this.Controls.Add(this.labelMsg);
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.textBoxPass);
             this.Controls.Add(this.textBoxLogin);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormLogin";
             this.Text = "Shift schedule generator";
             this.Load += new System.EventHandler(this.FormLogin_Load);
