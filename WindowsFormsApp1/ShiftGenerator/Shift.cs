@@ -102,14 +102,19 @@ namespace ShiftGenerator
         {
             Random rnd = new Random();
 
-            //////////////////  DAY SHIFTS - 2 channels, 2 MF, 1 language support, 2 idependent
+            //////////////////  DEAFULT DAY SHIFTS - 2 channels, 2 MF, 1 language support, 2 idependent
+            int limit=1;
+            //////////////////  Changing to Night Shift - 1 channels, 1 MF, 2 independent, 1 language support
+            
             if (this.shiftTime == "D")
             {
+                limit = 0;
+            }
                 /////////CHANNELS
                 int counterCH = 0;
                 fillShiftEmp(this.day, this.shiftTime, "CH-I");
                 var listOfCH = new List<int> { };
-                while (counterCH <= 1)
+                while (counterCH <= limit)
                 {
                     int r = rnd.Next(0,employeesAvailable.Count-1);
 
@@ -141,7 +146,7 @@ namespace ShiftGenerator
                 int counterMF = 0;
                 fillShiftEmp(this.day, this.shiftTime, "MF-I");
                 var listOfMF = new List<int> { };
-                while (counterMF <= 1)
+                while (counterMF <= limit)
                 {
                     int r = rnd.Next(employeesAvailable.Count);
                     if (listOfCH.Count == 0)
@@ -179,7 +184,7 @@ namespace ShiftGenerator
                 }
 
 
-            }
+            
 
         }
 

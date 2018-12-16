@@ -38,7 +38,7 @@
             // 
             this.buttonGenerate.Location = new System.Drawing.Point(23, 21);
             this.buttonGenerate.Name = "buttonGenerate";
-            this.buttonGenerate.Size = new System.Drawing.Size(156, 144);
+            this.buttonGenerate.Size = new System.Drawing.Size(209, 58);
             this.buttonGenerate.TabIndex = 0;
             this.buttonGenerate.Text = "Generate";
             this.buttonGenerate.UseVisualStyleBackColor = true;
@@ -48,7 +48,7 @@
             // 
             this.labelMsg.AutoSize = true;
             this.labelMsg.Enabled = false;
-            this.labelMsg.Location = new System.Drawing.Point(54, 201);
+            this.labelMsg.Location = new System.Drawing.Point(20, 105);
             this.labelMsg.Name = "labelMsg";
             this.labelMsg.Size = new System.Drawing.Size(76, 17);
             this.labelMsg.TabIndex = 1;
@@ -73,7 +73,7 @@
             this.Controls.Add(this.labelMsg);
             this.Controls.Add(this.buttonGenerate);
             this.Name = "FormSchedules";
-            this.Text = "FormSchedules";
+            this.Text = "Schedules";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
