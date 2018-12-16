@@ -12,15 +12,18 @@ namespace ShiftGenerator
 {
     public partial class FormSchedules : Form
     {
-        Shift shift = new Shift();
+        Shift shift;
 
         public FormSchedules()
         {
             InitializeComponent();
             this.ActiveControl = dataGridView1;
             DateTime date = new DateTime(2018, 12, 12);
-            shift.fillShiftEmp(date,"D","Language");
-            dataGridView1.DataSource = shift.EmployeesAvailable;
+            //shift.fillShiftEmp(date,"D","Language");
+            shift = new Shift(date, "D");
+            shift.chooseEmp();
+            //dataGridView1.DataSource = shift.EmployeesAvailable;
+            dataGridView1.DataSource = shift.EmployeesChoosen;
 
             for (int i = 0; i < dataGridView1.Columns.Count; i++)
             {
