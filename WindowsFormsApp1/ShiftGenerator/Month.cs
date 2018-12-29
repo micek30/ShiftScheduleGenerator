@@ -34,13 +34,29 @@ namespace ShiftGenerator
 
         public void fillShifts()
         {
+            int shiftCounter = 0;
             for(int i = 0; i < LastDay.Day;i++)
             {
+                // i+1 żeby dzień nie byl zerowy
                 DateTime date = new DateTime(this.YearNum, this.MonthNum, i+1);
+
+                //creating day shift
                 this.Shifts.Add(new Shift(date, "D"));
-                Shifts[i].chooseEmp();
+                if (i > 0)
+                {
+                    //filling day shift
+                    Shifts[shiftCounter].chooseEmp(Shifts[shiftCounter - 1]);
+                }else { Shifts[shiftCounter].chooseEmp(Shifts[shiftCounter]); }
+                
+                //creating night shift
                 this.Shifts.Add(new Shift(date, "N"));
-                Shifts[i+1].chooseEmp();
+                if (i > 0)
+                {
+                    //filling night shift
+                    Shifts[shiftCounter + 1].chooseEmp(Shifts[shiftCounter]);
+                }
+                else { Shifts[shiftCounter + 1].chooseEmp(Shifts[shiftCounter]); }
+                shiftCounter += 2;
             }
         }
     }

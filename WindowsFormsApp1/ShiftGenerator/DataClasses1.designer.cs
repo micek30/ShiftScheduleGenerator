@@ -172,6 +172,14 @@ namespace ShiftGenerator
 		
 		private EntityRef<Team> _Team;
 		
+        public List<Employee> getAllEmployee()
+        {
+            DataClasses1DataContext data = new DataClasses1DataContext();
+            var result = from emp in data.Employees
+                         orderby emp.idTeam
+                         select emp;
+            return result.ToList();
+        }
     #region Extensibility Method Definitions
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
