@@ -28,8 +28,6 @@ namespace ShiftGenerator
         public List<Employee> EmployeesAvailable { get => employeesAvailable; set => employeesAvailable = value; }
         public List<Employee> EmployeesChoosen { get => employeesChoosen; set => employeesChoosen = value; }
         public bool Language { get => language; set => language = value; }
-        //public List<int> ListOfCH { get => listOfCH; set => listOfCH = value; }
-        //public List<int> ListOfMF { get => listOfMF; set => listOfMF = value; }
 
         public void fillShiftEmp(DateTime day, String shiftTime, String restriction)
         {
@@ -186,7 +184,8 @@ namespace ShiftGenerator
                 }
                 else
                 {
-                    if (listOfMF.Contains(r)) {
+                    if (listOfMF.Contains(r))
+                    {
                         Console.Write("juz wylosowany");
                     }
                     else
