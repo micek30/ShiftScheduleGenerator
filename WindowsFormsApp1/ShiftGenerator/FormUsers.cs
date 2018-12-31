@@ -134,9 +134,9 @@ namespace ShiftGenerator
                 //idTeam
                 if (comboTeamVal == "Channels")
                 {
-                    employee.idTeam = 1;
+                    employee.idTeam = 2;
                 }
-                else { employee.idTeam = 2; }
+                else { employee.idTeam = 1; }
                 //idUser
                 var newUserId = (from users in data.Users
                                  orderby users.idUser descending
@@ -313,9 +313,9 @@ namespace ShiftGenerator
             //idTeam
             if (comboTeamVal == "Channels")
             {
-                toUpdateEmployee.idTeam = 1;
+                toUpdateEmployee.idTeam = 2;
             }
-            else { toUpdateEmployee.idTeam = 2; }
+            else { toUpdateEmployee.idTeam = 1; }
 
             //independent
             if (checkBoxIndependent.Checked)

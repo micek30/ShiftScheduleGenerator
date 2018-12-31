@@ -14,6 +14,8 @@ namespace ShiftGenerator
         DateTime day;
         String shiftTime;
         bool language = false;
+        List<int> listOfEmp = new List<int> { };
+        int counter = 1;
 
         public Shift() { }
 
@@ -45,7 +47,7 @@ namespace ShiftGenerator
                                     select employees;
                     this.EmployeesAvailable = resultAll.ToList();
                     break;
-                case "CH":
+                case "MF":
                     var resultCH = from employees in data.Employees
                                    join req in data.EmpRequirements on employees.idEmployee equals req.idEmployee into ps
                                    from req in ps.DefaultIfEmpty()
@@ -53,7 +55,7 @@ namespace ShiftGenerator
                                    select employees;
                     this.EmployeesAvailable = resultCH.ToList();
                     break;
-                case "MF":
+                case "CH":
                     var resultMF = from employees in data.Employees
                                    join req in data.EmpRequirements on employees.idEmployee equals req.idEmployee into ps
                                    from req in ps.DefaultIfEmpty()
@@ -78,7 +80,7 @@ namespace ShiftGenerator
                                     select employees;
                     this.EmployeesAvailable = resultInd.ToList();
                     break;
-                case "CH-I":
+                case "MF-I":
                     var resultCHI = from employees in data.Employees
                                     join req in data.EmpRequirements on employees.idEmployee equals req.idEmployee into ps
                                     from req in ps.DefaultIfEmpty()
@@ -86,7 +88,7 @@ namespace ShiftGenerator
                                     select employees;
                     this.EmployeesAvailable = resultCHI.ToList();
                     break;
-                case "MF-I":
+                case "CH-I":
                     var resultMFI = from employees in data.Employees
                                     join req in data.EmpRequirements on employees.idEmployee equals req.idEmployee into ps
                                     from req in ps.DefaultIfEmpty()
@@ -99,125 +101,108 @@ namespace ShiftGenerator
 
         public void chooseEmp(Shift previousShift)
         {
-            Random rnd = new Random();
-
             //////////////////  DEAFULT DAY SHIFTS - 2 channels, 2 MF, 1 language support, 2 idependent
             int limit = 2;
             //////////////////  Changing to Night Shift - 1 channels, 1 MF, 2 independent, 1 language support
 
             if (this.shiftTime == "N")
             {
-                limit = 1;
+                limit = 2;
             }
             /////////CHANNELS
-            int counterCH = 1;
             fillShiftEmp(this.day, this.shiftTime, "CH-I");
-            var listOfCH = new List<int> { };
-            while (counterCH <= limit)
+            while (counter <= limit)
             {
-                int r = rnd.Next(0, employeesAvailable.Count - 1);
-
-                if (listOfCH.Count == 0)
-                {
-                    if (!previousShift.EmployeesChoosen.Any(f => f.idEmployee == employeesAvailable[r].idEmployee))
-                    {
-                        EmployeesChoosen.Add(employeesAvailable[r]);
-                        listOfCH.Add(r);
-                        fillShiftEmp(this.day, this.shiftTime, "CH");
-                        counterCH++;
-
-                    }
-                    else
-                    {
-
-                        Console.Write("był na poprzedniej");
-                    }
-
-                }
-                else if (listOfCH.Contains(r))//checking if that person is already on shift
-                {
-                    Console.Write("juz wylosowany");
-                    ////DO NOTHING
-                }
-                else
-                {
-                    if (!previousShift.EmployeesChoosen.Any(f => f.idEmployee == employeesAvailable[r].idEmployee))
-                    {
-                        EmployeesChoosen.Add(employeesAvailable[r]);
-                        listOfCH.Add(r);
-                        counterCH++;
-                    }
-                    else
-                    {
-
-                        Console.Write("był na popredniej");
-                    }
-                }
-
-
-                if (employeesAvailable[r].frenchlvl == "B2" || employeesAvailable[r].frenchlvl == "C1" || employeesAvailable[r].frenchlvl == "C2")
-                {
-                    Language = true;
-                }
+                addEmpToShift(previousShift, "CH");
             }
 
             ////////////Mainframe
-            int counterMF = 1;
+            counter = 1;
             fillShiftEmp(this.day, this.shiftTime, "MF-I");
-            var listOfMF = new List<int> { };
-            while (counterMF <= limit)
+            while (counter <= limit)
             {
-                int r = rnd.Next(employeesAvailable.Count);
-                if (listOfMF.Count == 0)
+                addEmpToShift(previousShift, "MF");
+            }
+
+            ///////LANGUAGE SUPPORT
+            if (!Language)
+            {
+                counter = 1;
+                fillShiftEmp(this.day, this.shiftTime, "language");
+                while (counter <= 1)
                 {
-                    if (!previousShift.EmployeesChoosen.Any(f => f.idEmployee == employeesAvailable[r].idEmployee))
-                    {
-                        EmployeesChoosen.Add(employeesAvailable[r]);
-                        listOfMF.Add(r);
-                        fillShiftEmp(this.day, this.shiftTime, "MF");
-                        counterMF++;
-                    }
-                    else
-                    {
-                        Console.Write("na poprzedniej");
-                    }
+                    addEmpToShift(previousShift, "language");
+                }
+            }
+        }
+        public void addEmpToShift(Shift prev, String team)
+        {
+            Random rnd = new Random();
+            int r = rnd.Next(employeesAvailable.Count);
+
+            if (listOfEmp.Count == 0)
+            {
+                if (!(prev.EmployeesChoosen.Any(f => f.idEmployee == employeesAvailable[r].idEmployee))&&checkFTE(employeesAvailable[r]))
+                {
+                    EmployeesChoosen.Add(employeesAvailable[r]);
+
+                    updateFTE(employeesAvailable[r]);
+                    listOfEmp.Add(r);
+                    fillShiftEmp(this.day, this.shiftTime, team);
+                    counter++;
                 }
                 else
                 {
-                    if (listOfMF.Contains(r))
-                    {
-                        Console.Write("juz wylosowany");
-                    }
-                    else
-                    {
-                        if (!previousShift.EmployeesChoosen.Any(f => f.idEmployee == employeesAvailable[r].idEmployee))
-                        {
-                            EmployeesChoosen.Add(employeesAvailable[r]);
-                            listOfMF.Add(r);
-                            counterMF++;
-                        }
-                        else
-                        {
-                            Console.Write("na poprzedniej");
-                        }
-                    }
-                }
-
-
-                if (employeesAvailable[r].frenchlvl == "B2" || employeesAvailable[r].frenchlvl == "C1" || employeesAvailable[r].frenchlvl == "C2")
-                {
-                    Language = true;
+                    Console.Write("na poprzedniej");
                 }
             }
+            else
+            {
+                if (listOfEmp.Contains(r))
+            {
+                Console.Write("juz wylosowany");
+            }
+            else
+            {
+                if (!(prev.EmployeesChoosen.Any(f => f.idEmployee == employeesAvailable[r].idEmployee))&& checkFTE(employeesAvailable[r]))
+                {
+                    EmployeesChoosen.Add(employeesAvailable[r]);
+                    updateFTE(employeesAvailable[r]);
+                    listOfEmp.Add(r);
+                    counter++;
+                }
+                else
+                {
+                    Console.Write("na poprzedniej");
+                }
+            }
+                 }
 
-            /////////LANGUAGE SUPPORT
-            //if (!Language)
-            //{
-            //    fillShiftEmp(this.day, this.shiftTime, "language");
-            //    int r = rnd.Next(employeesAvailable.Count);
-            //    EmployeesChoosen.Add(employeesAvailable[r]);
-            //    Console.Write("test");
-            //}
+
+            if (employeesAvailable[r].frenchlvl == "B2" || employeesAvailable[r].frenchlvl == "C1" || employeesAvailable[r].frenchlvl == "C2")
+            {
+                Language = true;
+            }
+        }
+        public bool checkFTE(Employee emp)
+        {
+            DataClasses1DataContext data = new DataClasses1DataContext();
+            FTE fte = new FTE();
+            fte = data.FTEs.SingleOrDefault(x => x.idEmployee == emp.idEmployee);
+            if (fte.SPM > 0 && fte.workingHoursLast >= 12)
+            {
+                return true;
+            }
+            else return false;
+        }
+        public void updateFTE(Employee emp)
+        {
+            DataClasses1DataContext data = new DataClasses1DataContext();
+            FTE fte = new FTE();
+            fte = data.FTEs.SingleOrDefault(x => x.idEmployee == emp.idEmployee);
+            fte.SPM -= 1;
+            fte.workingHoursLast -= 12;
+            try { data.SubmitChanges(); } catch (Exception e) { Console.Write(e); }
         }
     }
 }

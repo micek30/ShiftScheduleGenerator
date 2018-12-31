@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ShiftGenerator
@@ -32,34 +33,39 @@ namespace ShiftGenerator
         public int YearNum { get => yearNum; set => yearNum = value; }
         internal List<Shift> Shifts { get => shifts; set => shifts = value; }
 
-        public void fillShifts()
+        public async void fillShifts()
         {
             int shiftCounter = 0;
-            for (int i = 0; i < LastDay.Day; i++)
+            await Task.Run(() =>
             {
-                // i+1 żeby dzień nie byl zerowy
 
-                DateTime date = new DateTime(this.YearNum, this.MonthNum, i + 1);
-
-                //creating day shift
-                this.Shifts.Add(new Shift(date, "D"));
-                if (i > 0)
+                for (int i = 0; i < LastDay.Day; i++)
                 {
-                    //filling day shift
-                    Shifts[shiftCounter].chooseEmp(Shifts[shiftCounter - 1]);
-                }
-                else { Shifts[shiftCounter].chooseEmp(Shifts[shiftCounter]); }
+                    // i+1 żeby dzień nie byl zerowy
 
-                //creating night shift
-                this.Shifts.Add(new Shift(date, "N"));
-                if (i > 0)
-                {
-                    //filling night shift
-                    Shifts[shiftCounter + 1].chooseEmp(Shifts[shiftCounter]);
+                    DateTime date = new DateTime(this.YearNum, this.MonthNum, i + 1);
+
+                    //creating day shift
+                    this.Shifts.Add(new Shift(date, "D"));
+                    if (i > 0)
+                    {
+                        //filling day shift
+                        Shifts[shiftCounter].chooseEmp(Shifts[shiftCounter - 1]);
+                    }
+                    else { Shifts[shiftCounter].chooseEmp(Shifts[shiftCounter]); }
+
+                    //creating night shift
+                    this.Shifts.Add(new Shift(date, "N"));
+                    if (i > 0)
+                    {
+                        //filling night shift
+                        Shifts[shiftCounter + 1].chooseEmp(Shifts[shiftCounter]);
+                    }
+                    else { Shifts[shiftCounter + 1].chooseEmp(Shifts[shiftCounter]); }
+                    shiftCounter += 2;
                 }
-                else { Shifts[shiftCounter + 1].chooseEmp(Shifts[shiftCounter]); }
-                shiftCounter += 2;
-            }
+
+            });
         }
         public void fillFTE()
         {
@@ -67,7 +73,7 @@ namespace ShiftGenerator
             DataClasses1DataContext data = new DataClasses1DataContext();
             Employee emp = new Employee();
             List<Employee> allEmp = emp.getAllEmployee();
-            int workingHours=0;
+            int workingHours = 0;
             //finding working days
             switch (this.monthNum)
             {
@@ -96,7 +102,7 @@ namespace ShiftGenerator
                 //newFTE.workingHours = (int)(workingHours * newFTE.dimension);
                 newFTE.workingHours = (int)(Math.Ceiling(workingHours * (double)newFTE.dimension));
                 newFTE.workingHoursLast = newFTE.workingHours;
-                newFTE.SPM = (int)(Math.Ceiling((double)newFTE.workingHours/12));
+                newFTE.SPM = (int)(Math.Ceiling((double)newFTE.workingHours / 12));
 
                 try { data.SubmitChanges(); } catch (Exception ex) { Console.WriteLine(ex); }
             }

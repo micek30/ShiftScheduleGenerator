@@ -11,19 +11,22 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using Excel = Microsoft.Office.Interop.Excel;
+using System.Threading;
 
 namespace ShiftGenerator
 {
     public partial class FormSchedules : Form
     {
         Month month;
-
+        private readonly SynchronizationContext synchronizationContext;
+        private DateTime dt = DateTime.Now;
         public FormSchedules()
         {
             InitializeComponent();
+            synchronizationContext = SynchronizationContext.Current;
         }
 
-        private void buttonGenerate_Click(object sender, EventArgs e)
+        private async void buttonGenerate_Click(object sender, EventArgs e)
         {
             labelMsg.Visible = true;
             labelMsg.Enabled = true;
@@ -31,16 +34,19 @@ namespace ShiftGenerator
 
             //creating month
             month = new Month(1, 2019);
-
-            //filling FTE's for choosen month
-            month.fillFTE();
-
-            //filling month with shifts
-            month.fillShifts();
-
-            //creating excel
-            createExcel(month);
-
+            await Task.Run(() =>
+            {
+                //filling FTE's for choosen month
+                month.fillFTE();
+                //filling month with shifts
+                month.fillShifts();
+            });
+            Thread.Sleep(20000);
+            await Task.Run(() =>
+            {
+                //creating excel
+                createExcel(month);
+            });
 
             this.ActiveControl = dataGridView1;
             int count = Convert.ToInt32(Math.Round(numericUpDown1.Value, 0));
@@ -98,6 +104,7 @@ namespace ShiftGenerator
             /////////////////////////////////////////////////////////////////////////////////////////////////
             int shiftCounter = 0;
             for (int i = 0; i < month.LastDay.Day; i++)
+            //for (int i = 0; i < 18; i++)
             {
 
                 xlWorkSheet.Cells[1, i + 4] = month.FirstDay.AddDays(i).DayOfWeek.ToString();

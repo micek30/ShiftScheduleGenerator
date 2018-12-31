@@ -50,7 +50,7 @@
             // 
             this.labelMsg.AutoSize = true;
             this.labelMsg.Enabled = false;
-            this.labelMsg.Location = new System.Drawing.Point(20, 105);
+            this.labelMsg.Location = new System.Drawing.Point(20, 101);
             this.labelMsg.Name = "labelMsg";
             this.labelMsg.Size = new System.Drawing.Size(91, 17);
             this.labelMsg.TabIndex = 1;
@@ -68,7 +68,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(23, 150);
+            this.numericUpDown1.Location = new System.Drawing.Point(36, 199);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(120, 22);
             this.numericUpDown1.TabIndex = 3;
@@ -78,7 +78,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(874, 297);
+            this.ClientSize = new System.Drawing.Size(860, 290);
             this.Controls.Add(this.numericUpDown1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.labelMsg);

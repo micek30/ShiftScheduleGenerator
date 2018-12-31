@@ -176,7 +176,7 @@ namespace ShiftGenerator
         {
             DataClasses1DataContext data = new DataClasses1DataContext();
             var result = from emp in data.Employees
-                         orderby emp.idTeam
+                         orderby emp.idTeam descending
                          select emp;
             return result.ToList();
         }
