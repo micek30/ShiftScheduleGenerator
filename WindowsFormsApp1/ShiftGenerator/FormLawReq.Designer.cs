@@ -57,6 +57,9 @@
             this.ClientSize = new System.Drawing.Size(879, 516);
             this.Controls.Add(this.comboBoxLaws);
             this.Controls.Add(this.labelLaw);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(897, 563);
+            this.MinimumSize = new System.Drawing.Size(897, 563);
             this.Name = "FormLawReq";
             this.Text = "FormLawReq";
             this.ResumeLayout(false);

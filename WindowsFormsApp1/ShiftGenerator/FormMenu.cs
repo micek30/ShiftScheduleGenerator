@@ -14,18 +14,15 @@ namespace ShiftGenerator
 {
     public partial class FormMenu : Form
     {
-        private FormLogin formLogin;
         private bool admin;
         public User user = new User();
-        DataClasses1DataContext data;
         public bool Admin { get => admin; set => admin = value; }
 
 
-        public FormMenu(FormLogin formLogin, User user)
+        public FormMenu( User user)
         {
             InitializeComponent();
             this.user = user;
-            //if (user.permission.Equals("admin")) admin = true;
             if (user.permission.Equals("admin"))
             {
                 admin = true;
@@ -35,34 +32,20 @@ namespace ShiftGenerator
                 btnSchedules.Enabled = false;
                 btnSchedules.Visible = false;
             }
-
-
-            data = new DataClasses1DataContext();
-            this.formLogin = formLogin;
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
         }
 
         private void btnUsersPnl_Click(object sender, EventArgs e)
         {
             if (admin)
             {
-                FormUsers formUsers = new FormUsers(this);
+                FormUsers formUsers = new FormUsers();
                 formUsers.Show();
             }
             else
             {
-                FormGuestUsrPnl formGuestUsrPnl = new FormGuestUsrPnl(this,this.user);
+                FormGuestUsrPnl formGuestUsrPnl = new FormGuestUsrPnl(this.user);
                 formGuestUsrPnl.Show();
             }
-        }
-
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void btnLawRequirements_Click(object sender, EventArgs e)
@@ -82,16 +65,11 @@ namespace ShiftGenerator
             formSchedules.Show();
         }
 
-        //protected override void OnFormClosing(FormClosingEventArgs e)
-        //{
-        //    base.OnFormClosing(e);
-
-        //    if (e.CloseReason == CloseReason.WindowsShutDown) return;
-
-        //    e.Cancel = true;
-        //    formLogin.Show();
-        //    this.Hide();
-        //}
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FormEmpReqAdm formEmpReqAdm = new FormEmpReqAdm(user);
+            formEmpReqAdm.Show();
+        }
     }
 }
  

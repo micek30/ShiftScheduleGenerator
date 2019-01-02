@@ -13,7 +13,6 @@ namespace ShiftGenerator
     public partial class FormGuestUsrPnl : Form
     {
         DataClasses1DataContext data;
-        FormMenu formHandler;
         public Employee toUpdateEmployee;
         public User toUpdateUser;
         public FTE toUpdateFTE;
@@ -22,11 +21,10 @@ namespace ShiftGenerator
         {
             InitializeComponent();
         }
-        public FormGuestUsrPnl(FormMenu form, User user)
+        public FormGuestUsrPnl(User user)
         {
             InitializeComponent();
             this.ActiveControl = buttonCancel;
-            this.formHandler = form;
             data = new DataClasses1DataContext();
             this.loggedUser = user;
             loadEmployee();
@@ -146,6 +144,28 @@ namespace ShiftGenerator
                 else { labelCheck.Text = "Passwords are different"; }
 
             }
+        }
+
+        private void textBoxName_Enter(object sender, EventArgs e)
+        {
+            textBoxName.Clear();
+            textBoxName.ForeColor = SystemColors.WindowText;
+        }
+
+        private void textBoxSurname_Enter(object sender, EventArgs e)
+        {
+            textBoxSurname.Clear();
+            textBoxSurname.ForeColor = SystemColors.WindowText;
+        }
+        private void textBoxPassword_Enter(object sender, EventArgs e)
+        {
+            textBoxPassword.Clear();
+            textBoxPassword.ForeColor = SystemColors.WindowText;
+        }
+        private void textBoxRepassword_Enter(object sender, EventArgs e)
+        {
+            textBoxRepassword.Clear();
+            textBoxRepassword.ForeColor = SystemColors.WindowText;
         }
     }
 }

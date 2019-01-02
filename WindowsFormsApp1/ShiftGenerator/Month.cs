@@ -33,11 +33,11 @@ namespace ShiftGenerator
         public int YearNum { get => yearNum; set => yearNum = value; }
         internal List<Shift> Shifts { get => shifts; set => shifts = value; }
 
-        public async void fillShifts()
+        public  void fillShifts()
         {
             int shiftCounter = 0;
-            await Task.Run(() =>
-            {
+            //await Task.Run(() =>
+            //{
 
                 for (int i = 0; i < LastDay.Day; i++)
                 {
@@ -65,7 +65,7 @@ namespace ShiftGenerator
                     shiftCounter += 2;
                 }
 
-            });
+            //});
         }
         public void fillFTE()
         {

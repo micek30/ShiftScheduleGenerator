@@ -13,15 +13,13 @@ namespace ShiftGenerator
     public partial class FormUsers : Form
     {
         DataClasses1DataContext data;
-        FormMenu formHandler;
         public Employee toUpdateEmployee;
         public User toUpdateUser;
         public FTE toUpdateFTE;
-        public FormUsers(FormMenu form)
+        public FormUsers()
         {
             InitializeComponent();
             this.ActiveControl = dataGridViewEmp;
-            this.formHandler = form;
                 data = new DataClasses1DataContext();
                 loadEmployees();
 
@@ -119,7 +117,7 @@ namespace ShiftGenerator
                 ////////////////////////////////////////// USER
                 User user = new User();
                 user.login = textBoxLogin.Text;
-                user.password = PasswordHash.getHash("test");
+                user.password = PasswordHash.getHash("Password1234");
                 user.permission = comboPermVal;
 
                 data.Users.InsertOnSubmit(user);
@@ -234,7 +232,6 @@ namespace ShiftGenerator
                 catch (Exception ex)
                 {
                     Console.Write(ex);
-                    //formHandler.lostConnection();
                 }
 
                 loadEmployees();
@@ -396,22 +393,6 @@ namespace ShiftGenerator
 
             try { data.SubmitChanges(); } catch (Exception ex) { Console.WriteLine(ex); }
         }
-
-        //
-        //////////  Function to calculating working days between two dates
-        //
-        //public int GetWorkingDays(DateTime from, DateTime to)
-        //{
-        //    var totalDays = 0;
-        //    for (var date = from; date < to; date = date.AddDays(1))
-        //    {
-        //        if (date.DayOfWeek != DayOfWeek.Saturday
-        //            && date.DayOfWeek != DayOfWeek.Sunday)
-        //            totalDays++;
-        //    }
-
-        //    return totalDays;
-        //}
     }
 }
  

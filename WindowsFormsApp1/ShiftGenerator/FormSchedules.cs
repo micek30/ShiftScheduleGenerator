@@ -18,12 +18,9 @@ namespace ShiftGenerator
     public partial class FormSchedules : Form
     {
         Month month;
-        private readonly SynchronizationContext synchronizationContext;
-        private DateTime dt = DateTime.Now;
         public FormSchedules()
         {
             InitializeComponent();
-            synchronizationContext = SynchronizationContext.Current;
         }
 
         private async void buttonGenerate_Click(object sender, EventArgs e)
@@ -93,18 +90,17 @@ namespace ShiftGenerator
             xlWorkSheet.Cells[2, 2] = "French";
             xlWorkSheet.Cells[2, 3] = "Independent";
 
-            //fill names, surnames, french level and independency
+            // fill names, surnames, french level and independency
             for (int i = 0; i < allEmp.Count(); i++)
             {
                 xlWorkSheet.Cells[i + 3, 1] = allEmp[i].name + " " + allEmp[i].surname;
                 xlWorkSheet.Cells[i + 3, 2] = allEmp[i].frenchlvl;
                 xlWorkSheet.Cells[i + 3, 3] = allEmp[i].independent.Value.ToString();
             }
-            //fill dates
+            ////////////// fill dates
             /////////////////////////////////////////////////////////////////////////////////////////////////
             int shiftCounter = 0;
             for (int i = 0; i < month.LastDay.Day; i++)
-            //for (int i = 0; i < 18; i++)
             {
 
                 xlWorkSheet.Cells[1, i + 4] = month.FirstDay.AddDays(i).DayOfWeek.ToString();

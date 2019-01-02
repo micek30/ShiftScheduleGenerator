@@ -39,7 +39,7 @@
             this.textBoxLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.4F);
             this.textBoxLogin.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.textBoxLogin.Location = new System.Drawing.Point(57, 57);
-            this.textBoxLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxLogin.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxLogin.Name = "textBoxLogin";
             this.textBoxLogin.Size = new System.Drawing.Size(275, 46);
             this.textBoxLogin.TabIndex = 0;
@@ -51,7 +51,7 @@
             this.textBoxPass.Font = new System.Drawing.Font("Microsoft Sans Serif", 20.25F);
             this.textBoxPass.ForeColor = System.Drawing.SystemColors.WindowFrame;
             this.textBoxPass.Location = new System.Drawing.Point(57, 128);
-            this.textBoxPass.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.textBoxPass.Margin = new System.Windows.Forms.Padding(4);
             this.textBoxPass.Name = "textBoxPass";
             this.textBoxPass.PasswordChar = '*';
             this.textBoxPass.Size = new System.Drawing.Size(275, 46);
@@ -62,7 +62,7 @@
             // buttonLogin
             // 
             this.buttonLogin.Location = new System.Drawing.Point(123, 201);
-            this.buttonLogin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.buttonLogin.Margin = new System.Windows.Forms.Padding(4);
             this.buttonLogin.Name = "buttonLogin";
             this.buttonLogin.Size = new System.Drawing.Size(156, 52);
             this.buttonLogin.TabIndex = 2;
@@ -88,10 +88,12 @@
             this.Controls.Add(this.buttonLogin);
             this.Controls.Add(this.textBoxPass);
             this.Controls.Add(this.textBoxLogin);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(438, 344);
+            this.MinimumSize = new System.Drawing.Size(438, 344);
             this.Name = "FormLogin";
             this.Text = "Shift schedule generator";
-            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

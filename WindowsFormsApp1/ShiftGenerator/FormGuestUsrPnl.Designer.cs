@@ -19,8 +19,6 @@
 
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.textBoxName = new System.Windows.Forms.TextBox();
             this.textBoxSurname = new System.Windows.Forms.TextBox();
             this.textBoxPassword = new System.Windows.Forms.TextBox();
@@ -38,16 +36,10 @@
             this.labelCheck = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
             // textBoxName
             // 
             this.textBoxName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
-            this.textBoxName.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxName.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.textBoxName.Location = new System.Drawing.Point(157, 41);
             this.textBoxName.Name = "textBoxName";
             this.textBoxName.Size = new System.Drawing.Size(216, 28);
@@ -57,7 +49,7 @@
             // textBoxSurname
             // 
             this.textBoxSurname.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
-            this.textBoxSurname.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxSurname.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.textBoxSurname.Location = new System.Drawing.Point(157, 90);
             this.textBoxSurname.Name = "textBoxSurname";
             this.textBoxSurname.Size = new System.Drawing.Size(216, 28);
@@ -67,7 +59,7 @@
             // textBoxPassword
             // 
             this.textBoxPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
-            this.textBoxPassword.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxPassword.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.textBoxPassword.Location = new System.Drawing.Point(157, 138);
             this.textBoxPassword.Name = "textBoxPassword";
             this.textBoxPassword.Size = new System.Drawing.Size(216, 28);
@@ -77,7 +69,7 @@
             // textBoxRepassword
             // 
             this.textBoxRepassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F);
-            this.textBoxRepassword.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.textBoxRepassword.ForeColor = System.Drawing.SystemColors.ScrollBar;
             this.textBoxRepassword.Location = new System.Drawing.Point(157, 185);
             this.textBoxRepassword.Name = "textBoxRepassword";
             this.textBoxRepassword.Size = new System.Drawing.Size(216, 28);
@@ -215,6 +207,9 @@
             this.Controls.Add(this.textBoxPassword);
             this.Controls.Add(this.textBoxSurname);
             this.Controls.Add(this.textBoxName);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(575, 361);
+            this.MinimumSize = new System.Drawing.Size(575, 361);
             this.Name = "FormGuestUsrPnl";
             this.Text = "Edit User";
             this.ResumeLayout(false);
@@ -223,7 +218,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TextBox textBoxName;
         private System.Windows.Forms.TextBox textBoxSurname;
         private System.Windows.Forms.TextBox textBoxPassword;
